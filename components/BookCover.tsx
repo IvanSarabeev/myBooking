@@ -3,7 +3,13 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import BookCoverSvg from "@/components/BookCoverSvg";
 
-type BookCoverVariant = "extraSmall" | "small" | "medium" | "regular" | "wide";
+type BookCoverVariant =
+  | "extraSmall"
+  | "small"
+  | "medium"
+  | "regular"
+  | "wide"
+  | "default";
 
 const variantStyles: Record<BookCoverVariant, string> = {
   extraSmall: "book-cover_extra_small",
@@ -11,13 +17,14 @@ const variantStyles: Record<BookCoverVariant, string> = {
   medium: "book-cover_medium",
   regular: "book-cover_regular ",
   wide: "book-cover_wide",
+  default: "book-cover",
 };
 
 type Props = {
   variant?: BookCoverVariant;
   className?: string;
-  coverColor: string;
-  coverImage: string;
+  coverColor?: string;
+  coverImage?: string;
 };
 
 const BookCover: FC<Props> = ({
