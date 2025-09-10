@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 // @ts-ignore
 export default {
@@ -108,11 +109,25 @@ export default {
       },
       backgroundImage: {
         pattern: "url('/images/pattern.webp')",
-        "gradient-vertical":
-          "linear-gradient(180deg, #12141d 0%, #12151f 100%)",
-        "gradient-gray": "linear-gradient(270deg, #37363a 0%, #353637 100%)",
-        "gradient-blue": "linear-gradient(180deg, #232839 0%, #12141d 100%)",
+        gradientVertical: "linear-gradient(180deg, #12141d 0%, #12151f 100%)",
+        gradientGray: "linear-gradient(270deg, #37363a 0%, #353637 100%)",
+        gradientBlue: "linear-gradient(180deg, #232839 0%, #12141d 100%)",
       },
     },
   },
+  plugins: [
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        ".gradient-vertical": {
+          background: "linear-gradient(180deg, #12141d 0%, #12151f 100%)",
+        },
+        ".gradient-gray": {
+          background: "linear-gradient(270deg, #37363a 0%, #353637 100%)",
+        },
+        ".gradient-blue": {
+          background: "linear-gradient(180deg, #232839 0%, #12141d 100%)",
+        },
+      });
+    }),
+  ],
 } satisfies Config;
