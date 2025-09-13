@@ -64,7 +64,7 @@ const AuthForm = <T extends FieldValues>({
           className="space-y-6 w-full"
         >
           {Object.keys(defaultValues).length > 0
-            ? Object.keys(defaultValues).map((field) => (
+            ? Object.keys(defaultValues)?.map((field) => (
                 <FormField
                   key={field}
                   control={form.control}
@@ -76,7 +76,7 @@ const AuthForm = <T extends FieldValues>({
                       </FormLabel>
                       <FormControl>
                         {field.name === "universityCard" ? (
-                          <ImageUpload />
+                          <ImageUpload onFileChange={field.onChange} />
                         ) : (
                           <Input
                             required
