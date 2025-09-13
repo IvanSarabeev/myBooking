@@ -25,7 +25,7 @@ export const signUpSchema = z.object({
  * - `email` must be a valid email address and cannot be empty.
  * - `password` must be a string between 8 and 25 characters long and cannot be empty.
  *
- * This schema ensures that the required fields are appropriately formatted and meet the specified constraints.
+ * This schemas ensures that the required fields are appropriately formatted and meet the specified constraints.
  */
 export const signInSchema = z.object({
   email: z.email().nonempty("Email is required"),
