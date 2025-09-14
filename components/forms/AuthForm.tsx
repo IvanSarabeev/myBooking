@@ -23,6 +23,9 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
 import ImageUpload from "@/components/ImageUpload";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { CloudCheck, ShieldAlert } from "lucide-react";
 
 interface Props<T extends FieldValues> {
   type: "SIGN_IN" | "SIGN_UP";
@@ -37,6 +40,8 @@ const AuthForm = <T extends FieldValues>({
   defaultValues,
   onSubmit,
 }: Props<T>) => {
+  const router = useRouter();
+
   const isSignIn = type === "SIGN_IN";
 
   const form: UseFormReturn<T> = useForm<T>({
@@ -44,7 +49,31 @@ const AuthForm = <T extends FieldValues>({
     defaultValues: defaultValues as DefaultValues<T>,
   });
 
-  const handleSubmit: SubmitHandler<T> = async (data) => {};
+  const handleSubmit: SubmitHandler<T> = async (data) => {
+    const result = await onSubmit(data);
+
+    if (result.success) {
+      toast("Authentication successful!", {
+        icon: <CloudCheck />,
+        description: isSignIn
+          ? `You have successfully signed in!`
+          : `You have successfully signed up!`,
+      });
+      return router.push("/");
+    }
+
+    toast(
+      `Authentication failed for ${isSignIn ? "signing in" : "signing up"}!`,
+      {
+        icon: <ShieldAlert />,
+        description: result.error,
+        action: {
+          label: "Undo",
+          onClick: () => form.reset(defaultValues),
+        },
+      },
+    );
+  };
 
   return (
     <div className="flex flex-col gap-4">

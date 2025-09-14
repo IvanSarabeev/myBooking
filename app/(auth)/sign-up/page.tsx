@@ -3,6 +3,7 @@
 import React from "react";
 import AuthForm from "@/components/forms/AuthForm";
 import { signUpSchema } from "@/lib/validations";
+import { signUp } from "@/lib/actions/auth";
 
 const defaultValues = {
   fullName: "",
@@ -18,7 +19,7 @@ const SignUp = () => {
       type="SIGN_UP"
       schema={signUpSchema}
       defaultValues={defaultValues}
-      onSubmit={() => {}}
+      onSubmit={signUp}
     />
   );
 };
