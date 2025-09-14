@@ -1,12 +1,18 @@
 "use client";
 
-import React from "react";
+import { FC } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
+import { cn, getNameInitials } from "@/lib/utils";
 import Image from "next/image";
+import { Session } from "next-auth";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-const Header = () => {
+type Props = {
+  sessionDetails: Session;
+};
+
+const Header: FC<Props> = ({ sessionDetails }) => {
   const pathname = usePathname();
 
   return (
@@ -31,6 +37,21 @@ const Header = () => {
             )}
           >
             Library
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            href="/profile"
+            className="flex items-center gap-2"
+            aria-label="user profile link"
+          >
+            <Avatar className="transition-all hover:scale-105">
+              <AvatarFallback className="text-dark-700 bg-amber-100 hover:bg-amber-50">
+                {getNameInitials(sessionDetails?.user?.name || "")}
+              </AvatarFallback>
+            </Avatar>
+            <p className="text-light-100">{sessionDetails?.user?.name || ""}</p>
           </Link>
         </li>
       </ul>

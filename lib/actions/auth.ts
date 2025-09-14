@@ -19,7 +19,7 @@ import { signIn } from "@/auth";
  */
 export const signInWithCredentials = async (
   parameters: Pick<AuthCredentials, "email" | "password">,
-) => {
+): Promise<object> => {
   const { email, password } = parameters;
 
   try {
@@ -59,7 +59,7 @@ export const signInWithCredentials = async (
  * @returns {boolean} return.success - Indicates whether the signup was successful.
  * @returns {string} [return.error] - Provides an error message in case of failure.
  */
-export const signUp = async (parameters: AuthCredentials) => {
+export const signUp = async (parameters: AuthCredentials): Promise<object> => {
   const { email, password, fullName, universityId, universityCard } =
     parameters;
 
@@ -76,6 +76,7 @@ export const signUp = async (parameters: AuthCredentials) => {
 
     const hashedPassword = await hash(password, 12);
 
+    // @ts-ignore
     await db.insert(usersSchema).values({
       fullName,
       email,
