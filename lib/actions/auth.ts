@@ -5,6 +5,11 @@ import { eq } from "drizzle-orm";
 import { hash } from "bcryptjs";
 import { db } from "@/database/drizzle";
 import { signIn } from "@/auth";
+import { headers } from "next/headers";
+import ratelimiter from "@/lib/ratelimiter";
+import { redirect } from "next/navigation";
+
+const DEFAULT_IP_ADDRESS = "127.0.0.1";
 
 /**
  * Handles user sign-in using email and password credentials.
@@ -21,6 +26,8 @@ export const signInWithCredentials = async (
   parameters: Pick<AuthCredentials, "email" | "password">,
 ): Promise<object> => {
   const { email, password } = parameters;
+
+  // await validateRequestRateLimit();
 
   try {
     const authenticateResult = await signIn("credentials", {
@@ -63,6 +70,8 @@ export const signUp = async (parameters: AuthCredentials): Promise<object> => {
   const { email, password, fullName, universityId, universityCard } =
     parameters;
 
+  // await validateRequestRateLimit();
+
   try {
     const existingUser = await db
       .select()
@@ -92,5 +101,37 @@ export const signUp = async (parameters: AuthCredentials): Promise<object> => {
     console.error(`Signup error: ${error}`);
 
     return { success: false, error: "Signup error" };
+  }
+};
+
+/**
+ * Checks and enforces the rate limit for a given user's IP address.
+ *
+ * @param {string} userIp - The IP address of the user for which the rate limit is being checked.
+ * @throws {Error} If the rate limit has been exceeded for the specified IP address.
+ * @returns {Promise<void>} Resolves successfully if the request is allowed, or throws an error if rate limit is exceeded.
+ */
+const checkRateLimit = async (userIp: string): Promise<void> => {
+  const { success } = await ratelimiter.limit(userIp);
+
+  if (!success) {
+    throw new Error("Too many attempts. Please try again in a few minutes");
+  }
+};
+
+/**
+ * Validates user request against rate limiting and redirects if necessary
+ * @returns {Promise<Response | undefined>} Redirect response if rate-limited, undefined otherwise
+ */
+
+const validateRequestRateLimit = async (): Promise<Response | undefined> => {
+  try {
+    const userIp =
+      (await headers()).get("x-forwarded-for") || DEFAULT_IP_ADDRESS;
+
+    await checkRateLimit(userIp);
+    return undefined;
+  } catch (error: unknown) {
+    return redirect("/rate-limit");
   }
 };
