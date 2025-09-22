@@ -148,7 +148,7 @@ const BookForm: FC<BookFormProps> = ({ type, ...book }) => {
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1">
               <FormLabel className="text-base font-normal text-dark-500">
-                Total Copies
+                Total number of books
               </FormLabel>
               <FormControl>
                 <Input
@@ -156,7 +156,7 @@ const BookForm: FC<BookFormProps> = ({ type, ...book }) => {
                   type="number"
                   min={1}
                   max={10000}
-                  placeholder="Enter the total copies of the book"
+                  placeholder="Enter the total number of books"
                   className="book-form_input"
                   {...field}
                 />
@@ -186,7 +186,7 @@ const BookForm: FC<BookFormProps> = ({ type, ...book }) => {
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1">
               <FormLabel className="text-base font-normal text-dark-500">
-                Primary Color
+                Book Primary Color
               </FormLabel>
               <FormControl>{/*  Color Picker */}</FormControl>
               <FormMessage />
@@ -240,7 +240,7 @@ const BookForm: FC<BookFormProps> = ({ type, ...book }) => {
               <FormControl>
                 <Textarea
                   rows={5}
-                  placeholder="Enter the book summary"
+                  placeholder="Write a brief summary of the book"
                   className="book-form_input"
                   {...field}
                 />

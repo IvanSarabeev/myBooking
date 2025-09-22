@@ -66,10 +66,10 @@ const Sidebar: FC<SidebarProps> = ({ session }) => {
         </div>
       </div>
 
-      <div className="user">
+      <div className="user items-center">
         <Avatar>
           <AvatarFallback className="bg-amber-100">
-            {getNameInitials(session?.user?.name || "")}
+            {getNameInitials(session?.user?.name || "IN")}
           </AvatarFallback>
         </Avatar>
 
