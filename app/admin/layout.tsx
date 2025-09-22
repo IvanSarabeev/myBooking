@@ -1,6 +1,8 @@
 import { FC, ReactNode } from "react";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import Sidebar from "@/components/admin/Sidebar";
+import Header from "@/components/admin/Header";
 
 type LayoutProps = {
   children: ReactNode;
@@ -13,10 +15,11 @@ const Layout: FC<LayoutProps> = async ({ children }) => {
 
   return (
     <main className="flex min-h-screen w-full flex-row">
-      <p>Sidebar</p>
+      <Sidebar session={session} />
 
       <div className="admin-container">
-        <p>Header</p>
+        <Header session={session} />
+
         {children}
       </div>
     </main>
