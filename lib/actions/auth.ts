@@ -8,8 +8,18 @@ import { signIn } from "@/auth";
 import { headers } from "next/headers";
 import ratelimiter from "@/lib/ratelimiter";
 import { redirect } from "next/navigation";
+import { workflowClient } from "@/lib/workflow";
+import config from "@/lib/env.config";
 
 const DEFAULT_IP_ADDRESS = "127.0.0.1";
+
+const {
+  env: {
+    apiServer: { prodEndpoint },
+  },
+} = config;
+
+if (!prodEndpoint) throw new Error("API server URL is not defined");
 
 /**
  * Handles user sign-in using email and password credentials.
@@ -92,6 +102,14 @@ export const signUp = async (parameters: AuthCredentials): Promise<object> => {
       password: hashedPassword,
       universityId,
       universityCard,
+    });
+
+    await workflowClient.trigger({
+      url: `${prodEndpoint}/api/workflows/onboarding`,
+      body: {
+        email,
+        fullName,
+      },
     });
 
     await signInWithCredentials({ email, password });
