@@ -13,6 +13,12 @@ const config = {
       redisUrl: process.env.UPSTASH_REDIS_URL!,
       redisToken: process.env.UPSTASH_REDIS_TOKEN!,
     },
+    qStash: {
+      url: process.env.QSTASH_URL!,
+      token: process.env.QSTASH_TOKEN!,
+      currentSigningKey: process.env.QSTASH_CURRENT_SIGNING_KEY!,
+      nextSigningKey: process.env.QSTASH_NEXT_SIGNING_KEY!,
+    },
   },
 };
 

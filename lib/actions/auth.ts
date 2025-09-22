@@ -27,7 +27,7 @@ export const signInWithCredentials = async (
 ): Promise<object> => {
   const { email, password } = parameters;
 
-  // await validateRequestRateLimit();
+  await validateRequestRateLimit();
 
   try {
     const authenticateResult = await signIn("credentials", {
@@ -70,7 +70,7 @@ export const signUp = async (parameters: AuthCredentials): Promise<object> => {
   const { email, password, fullName, universityId, universityCard } =
     parameters;
 
-  // await validateRequestRateLimit();
+  await validateRequestRateLimit();
 
   try {
     const existingUser = await db
