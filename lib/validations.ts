@@ -31,3 +31,37 @@ export const signInSchema = z.object({
   email: z.email().nonempty("Email is required"),
   password: z.string().min(8).max(25).nonempty("Password is required"),
 });
+
+/**
+ * Schema definition for a book object using the Zod library.
+ *
+ * This schema validates the structure and constraints of a book object to ensure data integrity.
+ *
+ * Properties:
+ * - `title`: A string representing the title of the book. It must be trimmed, between 2 and 100 characters in length.
+ * - `author`: A string representing the author of the book. It must be trimmed, between 2 and 100 characters in length.
+ * - `genre`: A string representing the genre of the book. It must be trimmed, between 2 and 50 characters in length.
+ * - `rating`: A number representing the rating of the book. It must be between 1 and 5.
+ * - `totalCopies`: A number indicating the total copies available for the book. It must be at least 1.
+ * - `description`: A string providing a description of the book. It must be trimmed and between 10 and 1000 characters in length.
+ * - `coverUrl`: A string representing the URL of the book's cover image. It is required and must not be empty.
+ * - `coverColor`: A string representing the color of the book cover in hexadecimal format. It is required, trimmed, and must be a valid hexadecimal color code (e.g., #FFFFFF).
+ * - `videoUrl`: A string representing the URL of a related video for the book. It is required and must not be empty.
+ * - `summary`: A string giving a summary of the book. It must be trimmed and at least 10 characters in length.
+ */
+export const bookSchema = z.object({
+  title: z.string().trim().min(2).max(100),
+  author: z.string().trim().min(2).max(100),
+  genre: z.string().trim().min(2).max(50),
+  rating: z.number().min(1).max(5),
+  totalCopies: z.number().min(1),
+  description: z.string().trim().min(10).max(1000),
+  coverUrl: z.string().nonempty("Cover URL is required"),
+  coverColor: z
+    .string()
+    .trim()
+    .regex(/^#[0-9A-F]{6}$/i)
+    .nonempty("Cover color is required"),
+  videoUrl: z.string().nonempty("Video URL is required"),
+  summary: z.string().trim().min(10),
+});
