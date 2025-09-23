@@ -18,6 +18,7 @@ import { bookSchema } from "@/lib/validations";
 import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea";
 import FileUpload from "@/components/FileUpload";
+import ColorPicker from "@/components/ColorPicker";
 
 interface BookFormProps extends Partial<Book> {
   type?: "create" | "update";
@@ -50,7 +51,7 @@ const BookForm: FC<BookFormProps> = ({ type, ...book }) => {
   const isUpdated = type === "update";
 
   const onSubmit = async (values: BookFormValues) => {
-    console.log("Handle on submit");
+    console.log("Handle on submit: ", values);
   };
 
   return (
@@ -183,6 +184,7 @@ const BookForm: FC<BookFormProps> = ({ type, ...book }) => {
                   placeholder="Upload a book cover"
                   folder="books/covers"
                   variant="light"
+                  value={field.value}
                 />
               </FormControl>
               <FormMessage />
@@ -198,7 +200,12 @@ const BookForm: FC<BookFormProps> = ({ type, ...book }) => {
               <FormLabel className="text-base font-normal text-dark-500">
                 Book Primary Color
               </FormLabel>
-              <FormControl>{/*  Color Picker */}</FormControl>
+              <FormControl>
+                <ColorPicker
+                  onPickerChange={field.onChange}
+                  value={field.value}
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -241,6 +248,7 @@ const BookForm: FC<BookFormProps> = ({ type, ...book }) => {
                   placeholder="Upload a book trailer"
                   folder="books/videos"
                   variant="light"
+                  value={field.value}
                 />
               </FormControl>
               <FormMessage />
