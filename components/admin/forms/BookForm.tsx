@@ -19,6 +19,8 @@ import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea";
 import FileUpload from "@/components/FileUpload";
 import ColorPicker from "@/components/ColorPicker";
+import { createBook } from "@/lib/admin/actions/book";
+import { toast } from "sonner";
 
 interface BookFormProps extends Partial<Book> {
   type?: "create" | "update";
@@ -50,8 +52,39 @@ const BookForm: FC<BookFormProps> = ({ type }) => {
 
   const isUpdated = type === "update";
 
-  const onSubmit = async (values: BookFormValues) => {
-    console.log("Handle on submit: ", values);
+  /**
+   * Handles the submission of the book creation form.
+   *
+   * This asynchronous function processes the provided form values by invoking the
+   * `createBook` function. If the book creation is successful, a success message
+   * is displayed, and the user is redirected to the created book's detail page.
+   * Otherwise, an error message is displayed.
+   *
+   * @param {BookFormValues} values - The values entered in the book creation form.
+   * @return {Promise<void>} - Returns a Promise that is void
+   */
+  const onSubmit = async (values: BookFormValues): Promise<void> => {
+    const { success, data, message } = await createBook(values);
+
+    if (success) {
+      toast.success("Success", {
+        description: "Book created successfully",
+        style: {
+          background: "#22c55e",
+          color: "white",
+          fontWeight: 600,
+        },
+      });
+
+      router.push(`/admin/books/${data?.id}`);
+    }
+
+    toast.error(message || "Something went wrong. Please try again later.", {
+      style: {
+        background: "#ef4444",
+        color: "white",
+      },
+    });
   };
 
   return (

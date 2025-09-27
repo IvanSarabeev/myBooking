@@ -43,7 +43,22 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
         >
           {children}
 
-          <Toaster />
+          <Toaster
+            position="bottom-right"
+            richColors
+            toastOptions={{
+              style: {
+                background: "#111827",
+                color: "#fff",
+                fontWeight: 500,
+                fontSize: "1rem",
+                borderRadius: "0.5rem",
+                padding: "1rem",
+                boxShadow:
+                  "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+              },
+            }}
+          />
         </body>
       </SessionProvider>
     </html>

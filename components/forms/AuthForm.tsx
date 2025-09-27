@@ -53,11 +53,16 @@ const AuthForm = <T extends FieldValues>({
     const result = await onSubmit(data);
 
     if (result.success) {
-      toast("Authentication successful!", {
+      toast.success("Authentication successful!", {
         icon: <CloudCheck />,
         description: isSignIn
           ? `You have successfully signed in!`
           : `You have successfully signed up!`,
+        style: {
+          background: "#22c55e",
+          color: "white",
+          fontWeight: 600,
+        },
       });
 
       return router.push("/");
@@ -71,6 +76,10 @@ const AuthForm = <T extends FieldValues>({
         action: {
           label: "Undo",
           onClick: () => form.reset(defaultValues),
+        },
+        style: {
+          background: "#ef4444", // red-500
+          color: "white",
         },
       },
     );
