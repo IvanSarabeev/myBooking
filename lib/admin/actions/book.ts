@@ -7,7 +7,11 @@ import { booksSchema } from "@/database/schemas/books";
  * Asynchronously creates a new book entry in the database.
  *
  * @param {BookParams} parameters - An object containing the details of the book to be created.
- * @returns {Promise<Object>} A promise that resolves to an object with the result of the operation.
+ * @returns {Promise<{
+ *     success: boolean;
+ *     data: Book[];
+ *     message: string;
+ * }>} A promise that resolves to an object with the result of the operation.
  * The object contains a `success` flag, a `message` string, and optionally the created book data.
  *
  * If the operation succeeds, `success` will be `true`, `message` will indicate success,
@@ -15,7 +19,13 @@ import { booksSchema } from "@/database/schemas/books";
  *
  * If the operation fails, `success` will be `false` and `message` will indicate the failure.
  */
-export const createBook = async (parameters: BookParams): Promise<object> => {
+export const createBook = async (
+  parameters: BookParams,
+): Promise<{
+  success: boolean;
+  data?: Book;
+  message: string;
+}> => {
   try {
     const newBook = await db
       .insert(booksSchema)
