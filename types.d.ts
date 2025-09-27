@@ -41,3 +41,8 @@ interface BookParams
   coverColor: string;
   videoUrl: string;
 }
+
+interface BorrowBookParams {
+  bookId: string;
+  userId: string;
+}

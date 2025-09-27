@@ -13,12 +13,6 @@ const STATUS_ENUM = pgEnum("status", ["PENDING", "APPROVED", "REJECTED"]);
 
 const ROLE_ENUM = pgEnum("role", ["ADMIN", "USER"]);
 
-const BORROW_STATUS_ENUM = pgEnum("borrow_status", [
-  "BORROWED",
-  "PENDING",
-  "RETURNED",
-]);
-
 export const usersSchema = pgTable("users", {
   id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
   fullName: varchar("full_name", { length: 255 }).notNull(),

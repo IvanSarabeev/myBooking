@@ -1,13 +1,15 @@
 import { FC } from "react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import BookCover from "@/components/BookCover";
+import BorrowBook from "@/components/BorrowBook";
+import { canUserBorrowBook } from "@/lib/actions/book";
 
 type BookOverviewProps = Book & {
   userId: string;
 };
 
-const BookOverview: FC<BookOverviewProps> = ({
+const BookOverview: FC<BookOverviewProps> = async ({
+  id,
   title,
   author,
   genre,
@@ -19,6 +21,8 @@ const BookOverview: FC<BookOverviewProps> = ({
   coverUrl,
   userId,
 }) => {
+  const isUserEligible = await canUserBorrowBook(userId, availableCopies);
+
   return (
     <section className="book-overview">
       <div className="flex flex-1 flex-col gap-5">
@@ -60,17 +64,11 @@ const BookOverview: FC<BookOverviewProps> = ({
 
         <p className="book-description">{description}</p>
 
-        <Button className="book-overview_btn">
-          <Image
-            src="/icons/book.svg"
-            alt="book"
-            width={20}
-            height={20}
-            loading="lazy"
-          />
-
-          <p className="font-bebas-neue text-xl text-dark-100">Borrow</p>
-        </Button>
+        <BorrowBook
+          bookId={id as string}
+          userId={userId}
+          borrowingEligibility={isUserEligible}
+        />
       </div>
 
       <div className="relative flex flex-1 justify-center">
