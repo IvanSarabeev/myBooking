@@ -25,3 +25,19 @@ interface AuthCredentials {
   universityId: number;
   universityCard: string;
 }
+
+interface BookParams
+  extends Pick<
+    Book,
+    | "title"
+    | "author"
+    | "genre"
+    | "rating"
+    | "total_copies"
+    | "description"
+    | "summary"
+  > {
+  coverUrl: string;
+  coverColor: string;
+  videoUrl: string;
+}

@@ -53,9 +53,18 @@ export const bookSchema = z.object({
   title: z.string().trim().min(2).max(100),
   author: z.string().trim().min(2).max(100),
   genre: z.string().trim().min(2).max(50),
-  rating: z.coerce.number().min(1).max(5),
-  total_copies: z.coerce.number().min(1),
-  description: z.string().trim().min(10).max(1000),
+  rating: z.coerce
+    .number<number>()
+    .min(1, { error: "Rating must be at least 1" })
+    .max(5, { error: "Rating cannot exceed 5" }),
+  total_copies: z.coerce.number<number>().min(1),
+  description: z
+    .string()
+    .trim()
+    .min(10, { error: "Description must contain at least 10 characters" })
+    .max(1000, {
+      error: "Description cannot exceed more than 1000 characters",
+    }),
   coverUrl: z.string().nonempty("Cover URL is required"),
   coverColor: z
     .string()
@@ -64,19 +73,4 @@ export const bookSchema = z.object({
     .nonempty("Cover color is required"),
   videoUrl: z.string().nonempty("Video URL is required"),
   summary: z.string().trim().min(10),
-}) as unknown as z.ZodType<
-  {
-    title: string;
-    author: string;
-    genre: string;
-    rating: number;
-    total_copies: number;
-    description: string;
-    coverUrl: string;
-    coverColor: string;
-    videoUrl: string;
-    summary: string;
-  },
-  any,
-  any
->;
+});

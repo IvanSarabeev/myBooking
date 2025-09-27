@@ -68,7 +68,7 @@ const BookForm: FC<BookFormProps> = ({ type }) => {
 
     if (success) {
       toast.success("Success", {
-        description: "Book created successfully",
+        description: message,
         style: {
           background: "#22c55e",
           color: "white",
@@ -169,6 +169,7 @@ const BookForm: FC<BookFormProps> = ({ type }) => {
                   <Input
                     required
                     type="number"
+                    step="0.1"
                     min={1}
                     max={5}
                     placeholder="Enter the book rating"
