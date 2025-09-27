@@ -1,24 +1,5 @@
-import ImageKit from "imagekit";
-import config from "@/lib/env.config";
 import { NextResponse } from "next/server";
-
-const {
-  env: {
-    imageKit: { urlEndpoint, publicKey, privateKey },
-  },
-} = config;
-
-if (!urlEndpoint || !publicKey || !privateKey) {
-  throw new Error(
-    "ImageKit URL endpoint, public key or private key is not defined",
-  );
-}
-
-const imagekit = new ImageKit({
-  publicKey,
-  privateKey,
-  urlEndpoint,
-});
+import imagekit from "@/lib/imagekit";
 
 /**
  * Handles a GET request and retrieves authentication parameters from ImageKit.

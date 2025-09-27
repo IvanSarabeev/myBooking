@@ -15,6 +15,13 @@
       "when": 1758969691174,
       "tag": "0001_overconfident_junta",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1758984906320,
+      "tag": "0002_open_sue_storm",
+      "breakpoints": true
     }
   ]
 }
