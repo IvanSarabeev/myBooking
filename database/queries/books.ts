@@ -1,6 +1,6 @@
 import { db } from "@/database/drizzle";
 import { booksSchema } from "@/database";
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { revalidateTag, unstable_cache } from "next/cache";
 
 const LATEST_BOOKS_LIMIT = 10;
@@ -61,4 +61,23 @@ export const getLatestBooks = async (
  */
 export const invalidateLatestBookCache = () => {
   revalidateTag(LATEST_BOOKS_CACHE_KEY);
+};
+
+/**
+ * Fetches a book from the database by its unique identifier.
+ *
+ * @param {string} id - The unique identifier of the book to fetch.
+ * @returns {Promise<Book|undefined>} A promise that resolves to the book object
+ * if found or an empty array if no matching record exists.
+ */
+export const getBookById = async (id: string): Promise<Book | undefined> => {
+  if (!id) return;
+
+  const book = await db
+    .select()
+    .from(booksSchema)
+    .where(eq(booksSchema.id, id))
+    .limit(1);
+
+  return book[0] as Book | undefined;
 };

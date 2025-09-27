@@ -7,7 +7,7 @@ import { getLatestBooks } from "@/database/queries/books";
 const Home = async () => {
   const session = await auth();
 
-  const latestBooks = await getLatestBooks();
+  const latestBooks = await getLatestBooks(13);
 
   return (
     <Fragment>
