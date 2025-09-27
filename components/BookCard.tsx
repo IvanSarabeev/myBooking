@@ -7,15 +7,15 @@ import { Button } from "@/components/ui/button";
 
 type Props = Pick<
   Book,
-  "id" | "title" | "genre" | "color" | "cover" | "isLoanedBook"
+  "id" | "title" | "genre" | "coverColor" | "coverUrl" | "isLoanedBook"
 >;
 
 const BookCard: FC<Props> = ({
   id,
   title,
   genre,
-  color,
-  cover,
+  coverUrl,
+  coverColor,
   isLoanedBook = false,
 }) => {
   return (
@@ -24,7 +24,7 @@ const BookCard: FC<Props> = ({
         href={`/books/${id}`}
         className={cn(isLoanedBook && "w-full flex flex-col items-center")}
       >
-        <BookCover coverColor={color} coverImage={cover} />
+        <BookCover coverColor={coverColor} coverImage={coverUrl} />
 
         <div className={cn("mt-4", !isLoanedBook && "sm:max-w-40 max-w-28")}>
           <p className="book-title">{title}</p>

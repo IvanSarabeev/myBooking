@@ -1,7 +1,11 @@
-import React, { FC } from "react";
+"use client";
+
+import { FC } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import BookCoverSvg from "@/components/BookCoverSvg";
+import { IKImage } from "imagekitio-next";
+import config from "@/lib/env.config";
 
 type BookCoverVariant =
   | "extraSmall"
@@ -20,14 +24,20 @@ const variantStyles: Record<BookCoverVariant, string> = {
   default: "book-cover",
 };
 
-type Props = {
+type BookCoverProps = {
   variant?: BookCoverVariant;
   className?: string;
   coverColor?: string;
   coverImage?: string;
 };
 
-const BookCover: FC<Props> = ({
+const {
+  env: { imageKit },
+} = config;
+
+const ImageKitUrl = imageKit?.urlEndpoint;
+
+const BookCover: FC<BookCoverProps> = ({
   variant = "regular",
   className,
   coverColor = "#012B48",
@@ -47,14 +57,29 @@ const BookCover: FC<Props> = ({
         className="absolute z-10"
         style={{ left: "12%", width: "87.5%", height: "88%" }}
       >
-        <Image
-          src={coverImage}
-          alt="book cover "
-          fill
-          priority
-          className="rounded-sm object-fill"
-          color={coverColor}
-        />
+        {ImageKitUrl !== undefined ? (
+          <IKImage
+            path={coverImage}
+            urlEndpoint={imageKit.urlEndpoint}
+            loading="lazy"
+            lqip={{ active: true }}
+            alt="book cover "
+            fill
+            className="rounded-sm object-fill"
+          />
+        ) : (
+          <Image
+            src={coverImage}
+            alt="book cover"
+            fill
+            priority
+            width={200}
+            height={280}
+            loading="lazy"
+            decoding="async"
+            className="rounded-sm object-fill"
+          />
+        )}
       </div>
     </div>
   );
