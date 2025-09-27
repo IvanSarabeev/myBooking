@@ -33,7 +33,7 @@ const defaultValues: BookFormValues = {
   author: "",
   genre: "",
   rating: 1,
-  total_copies: 1,
+  totalCopies: 1,
   description: "",
   coverUrl: "",
   coverColor: "",
@@ -184,7 +184,7 @@ const BookForm: FC<BookFormProps> = ({ type }) => {
 
           <FormField
             control={form.control}
-            name="total_copies"
+            name="totalCopies"
             render={({ field }) => (
               <FormItem className="w-full flex flex-col gap-1">
                 <FormLabel className="text-base font-normal text-dark-500">

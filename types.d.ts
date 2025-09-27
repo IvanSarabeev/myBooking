@@ -2,7 +2,7 @@
  * Represents a book entity with various attributes describing its properties and availability.
  */
 interface Book {
-  id: string;
+  id: string | number;
   title: string;
   author: string;
   genre: string;
@@ -14,7 +14,7 @@ interface Book {
   coverUrl: string;
   videoUrl: string;
   summary: string;
-  createdAt: Date | null;
+  createdAt?: Date | null;
   isLoanedBook?: boolean;
 }
 
@@ -33,7 +33,7 @@ interface BookParams
     | "author"
     | "genre"
     | "rating"
-    | "total_copies"
+    | "totalCopies"
     | "description"
     | "summary"
   > {

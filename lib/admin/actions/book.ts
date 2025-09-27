@@ -31,7 +31,7 @@ export const createBook = async (
       .insert(booksSchema)
       .values({
         ...parameters,
-        availableCopies: parameters.total_copies,
+        availableCopies: parameters.totalCopies,
       })
       .returning(); // Get the value back from the DB
 

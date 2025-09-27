@@ -57,7 +57,7 @@ export const bookSchema = z.object({
     .number<number>()
     .min(1, { error: "Rating must be at least 1" })
     .max(5, { error: "Rating cannot exceed 5" }),
-  total_copies: z.coerce.number<number>().min(1),
+  totalCopies: z.coerce.number<number>().min(1),
   description: z
     .string()
     .trim()
