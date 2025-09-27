@@ -31,7 +31,7 @@ const defaultValues: BookFormValues = {
   author: "",
   genre: "",
   rating: 1,
-  totalCopies: 1,
+  total_copies: 1,
   description: "",
   coverUrl: "",
   coverColor: "",
@@ -39,7 +39,7 @@ const defaultValues: BookFormValues = {
   summary: "",
 };
 
-const BookForm: FC<BookFormProps> = ({ type, ...book }) => {
+const BookForm: FC<BookFormProps> = ({ type }) => {
   const router = useRouter();
 
   const form = useForm<BookFormValues>({
@@ -57,47 +57,49 @@ const BookForm: FC<BookFormProps> = ({ type, ...book }) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem className="flex flex-col gap-1">
-              <FormLabel className="text-base font-normal text-dark-500">
-                Book Title
-              </FormLabel>
-              <FormControl>
-                <Input
-                  required
-                  placeholder="Enter the book title"
-                  className="book-form_input"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex flex-col md:flex-row gap-4">
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem className="w-full flex flex-col gap-1">
+                <FormLabel className="text-base font-normal text-dark-500">
+                  Book Title
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    required
+                    placeholder="Enter the book title"
+                    className="book-form_input"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="author"
-          render={({ field }) => (
-            <FormItem className="flex flex-col gap-1">
-              <FormLabel className="text-base font-normal text-dark-500">
-                Author
-              </FormLabel>
-              <FormControl>
-                <Input
-                  required
-                  placeholder="Enter the author name"
-                  className="book-form_input"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="author"
+            render={({ field }) => (
+              <FormItem className="w-full flex flex-col gap-1">
+                <FormLabel className="text-base font-normal text-dark-500">
+                  Author
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    required
+                    placeholder="Enter the author name"
+                    className="book-form_input"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <FormField
           control={form.control}
@@ -120,53 +122,56 @@ const BookForm: FC<BookFormProps> = ({ type, ...book }) => {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="rating"
-          render={({ field }) => (
-            <FormItem className="flex flex-col gap-1">
-              <FormLabel className="text-base font-normal text-dark-500">
-                Rating
-              </FormLabel>
-              <FormControl>
-                <Input
-                  required
-                  type="number"
-                  min={1}
-                  max={5}
-                  placeholder="Enter the book rating"
-                  className="book-form_input"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex flex-col md:flex-row gap-4">
+          <FormField
+            control={form.control}
+            name="rating"
+            render={({ field }) => (
+              <FormItem className="w-full flex flex-col gap-1">
+                <FormLabel className="text-base font-normal text-dark-500">
+                  Rating
+                  <span className="text-xs text-slate-500">(up to 5)</span>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    required
+                    type="number"
+                    min={1}
+                    max={5}
+                    placeholder="Enter the book rating"
+                    className="book-form_input"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="totalCopies"
-          render={({ field }) => (
-            <FormItem className="flex flex-col gap-1">
-              <FormLabel className="text-base font-normal text-dark-500">
-                Total number of books
-              </FormLabel>
-              <FormControl>
-                <Input
-                  required
-                  type="number"
-                  min={1}
-                  max={10000}
-                  placeholder="Enter the total number of books"
-                  className="book-form_input"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="total_copies"
+            render={({ field }) => (
+              <FormItem className="w-full flex flex-col gap-1">
+                <FormLabel className="text-base font-normal text-dark-500">
+                  Total number of books
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    required
+                    type="number"
+                    min={1}
+                    max={10000}
+                    placeholder="Enter the total number of books"
+                    className="book-form_input"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <FormField
           control={form.control}
@@ -203,7 +208,7 @@ const BookForm: FC<BookFormProps> = ({ type, ...book }) => {
               <FormControl>
                 <ColorPicker
                   onPickerChange={field.onChange}
-                  value={field.value}
+                  value={field.value || "#000000"}
                 />
               </FormControl>
               <FormMessage />

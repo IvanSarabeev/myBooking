@@ -12,6 +12,7 @@ interface Book {
   description: string;
   color: string;
   cover: string;
+  cover_color?: string;
   video: string;
   summary: string;
   isLoanedBook?: boolean;

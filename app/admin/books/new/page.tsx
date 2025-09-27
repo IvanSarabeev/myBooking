@@ -10,7 +10,7 @@ const Page: FC = () => {
         <Link href="/admin/books">Go Back</Link>
       </Button>
 
-      <section className="w-full max-w-2xl">
+      <section className="w-full max-w-3xl">
         <BookForm />
       </section>
     </Fragment>

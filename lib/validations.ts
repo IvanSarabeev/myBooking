@@ -53,8 +53,8 @@ export const bookSchema = z.object({
   title: z.string().trim().min(2).max(100),
   author: z.string().trim().min(2).max(100),
   genre: z.string().trim().min(2).max(50),
-  rating: z.number().min(1).max(5),
-  totalCopies: z.number().min(1),
+  rating: z.coerce.number().min(1).max(5),
+  total_copies: z.coerce.number().min(1),
   description: z.string().trim().min(10).max(1000),
   coverUrl: z.string().nonempty("Cover URL is required"),
   coverColor: z
@@ -64,4 +64,19 @@ export const bookSchema = z.object({
     .nonempty("Cover color is required"),
   videoUrl: z.string().nonempty("Video URL is required"),
   summary: z.string().trim().min(10),
-});
+}) as unknown as z.ZodType<
+  {
+    title: string;
+    author: string;
+    genre: string;
+    rating: number;
+    total_copies: number;
+    description: string;
+    coverUrl: string;
+    coverColor: string;
+    videoUrl: string;
+    summary: string;
+  },
+  any,
+  any
+>;

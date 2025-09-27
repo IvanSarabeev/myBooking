@@ -188,6 +188,7 @@ const FileUpload: FC<Props> = ({
       )}
 
       {file &&
+        file.filePath &&
         (type === "image" ? (
           <IKImage
             alt={file.filePath || ""}
