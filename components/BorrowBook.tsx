@@ -12,6 +12,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
+import { revalidateBorrowedBooksCache } from "@/lib/actions/user";
 
 type BorrowBookProps = {
   bookId: string;
@@ -46,6 +47,7 @@ const BorrowBook: FC<BorrowBookProps> = ({
           },
         });
 
+        await revalidateBorrowedBooksCache();
         router.push("/profile");
       }
 

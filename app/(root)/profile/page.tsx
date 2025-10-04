@@ -1,10 +1,16 @@
 import { FC, Fragment } from "react";
-import { signOut } from "@/auth";
+import { auth, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 import BookList from "@/components/BookList";
-import { sampleBooks } from "@/constants";
+import { getBorrowedBooks } from "@/lib/actions/user";
+import { redirect } from "next/navigation";
+import BorrowedBooks from "@/components/BorrowedBooks";
 
-const ProfilePage: FC = () => {
+const ProfilePage: FC = async () => {
+  const session = await auth();
+
+  if (!session?.user?.id) redirect("/sign-in");
+
   /**
    * This is an asynchronous function that handles user logout operations.
    * It uses server-side functionality to securely sign the user out of their session.
@@ -17,13 +23,20 @@ const ProfilePage: FC = () => {
     return await signOut();
   };
 
+  const userId = session.user.id;
+  const borrowedBooks = await getBorrowedBooks(userId);
+
   return (
     <Fragment>
       <form action={handleLogout} className="mb-10">
         <Button>Logout</Button>
       </form>
 
-      <BookList title="Borrowed Books" books={sampleBooks} />
+      <BorrowedBooks
+        title={"Borrowed books"}
+        books={borrowedBooks}
+        containerClassName="mt-20"
+      />
     </Fragment>
   );
 };

@@ -1,5 +1,5 @@
 import { db } from "@/database/drizzle";
-import { booksSchema, borrowRecordsSchema } from "@/database";
+import { booksSchema } from "@/database";
 import { desc, eq } from "drizzle-orm";
 import { revalidateTag, unstable_cache } from "next/cache";
 

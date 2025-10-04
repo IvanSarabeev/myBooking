@@ -52,6 +52,25 @@ interface BorrowBookStatus {
   status: "BORROWED" | "PENDING" | "RETURNED";
 }
 
+interface BorrowBook {
+  id: string;
+  userId: string;
+  bookId: string;
+  status: BorrowBookStatus["status"];
+  borrowDate: Date | string;
+  dueDate: Date | string;
+  returnDate: string | null;
+  createdAt: Date | null;
+}
+
+interface BorrowedBooks
+  extends Pick<
+    BorrowBook,
+    "id" | "borrowDate" | "dueDate" | "returnDate" | "status"
+  > {
+  books: Pick<Book, "id" | "title" | "genre" | "coverUrl" | "coverColor">;
+}
+
 /**
  * Represents the status of a user.
  *

@@ -1,13 +1,13 @@
 import { FC } from "react";
 import BookCard from "@/components/BookCard";
 
-type Props = {
+type BookListProps = {
   title: string;
   books: Book[];
   containerClassName?: string;
 };
 
-const BookList: FC<Props> = ({ title, books, containerClassName }) => {
+const BookList: FC<BookListProps> = ({ title, books, containerClassName }) => {
   if (books.length < 2) return;
 
   return (

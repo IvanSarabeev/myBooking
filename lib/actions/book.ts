@@ -29,52 +29,57 @@ export const borrowBook = async (
     };
 
   try {
-    return await db.transaction(async (tx) => {
-      const [book] = await tx
-        .select({ availableCopies: booksSchema.availableCopies })
-        .from(booksSchema)
-        .where(eq(booksSchema.id, bookId))
-        .limit(1);
+    const [book] = await db
+      .select({
+        availableCopies: booksSchema.availableCopies,
+      })
+      .from(booksSchema)
+      .where(eq(booksSchema.id, bookId))
+      .limit(1);
 
-      if (!book || book.availableCopies <= 0) {
-        return {
-          success: false,
-          message: "Book is not available",
-        };
-      }
+    if (!book || book.availableCopies <= 0) {
+      return { success: false, message: "Book is not available" };
+    }
 
-      const dueDate = dayjs().add(7, "day").toDate().toDateString();
-      const BORROWED: BorrowBookStatus["status"] = "BORROWED";
+    const dueDate = dayjs().add(7, "day").format("YYYY-MM-DD");
+    const returnDate = dayjs().add(14, "day").format("YYYY-MM-DD");
 
-      const insertRecord = await tx
-        .insert(borrowRecordsSchema)
-        .values({
-          userId,
-          bookId,
-          status: BORROWED,
-          dueDate,
-        })
-        .returning();
+    const [record] = await db
+      .insert(borrowRecordsSchema)
+      .values({
+        userId,
+        bookId,
+        dueDate,
+        returnDate,
+      })
+      .returning();
 
-      if (!insertRecord?.length) {
-        // Rollback Transactions
-        tx.rollback();
-        return {
-          success: false,
-          message: "An error occurred while borrowing the book.",
-        };
-      }
-
-      await tx
-        .update(booksSchema)
-        .set({ availableCopies: book.availableCopies - 1 })
-        .where(eq(booksSchema.id, bookId));
-
+    if (!record) {
       return {
-        success: true,
-        message: "Book borrowed successfully",
+        success: false,
+        message: "Failed to create borrow record.",
       };
-    });
+    }
+
+    // Decrement book copies
+    const updateResult = await db
+      .update(booksSchema)
+      .set({ availableCopies: book.availableCopies - 1 })
+      .where(eq(booksSchema.id, bookId))
+      .returning();
+
+    if (!updateResult.length) {
+      // (Optional) try rollback by deleting the inserted record
+      await db
+        .delete(borrowRecordsSchema)
+        .where(eq(borrowRecordsSchema.id, record.id));
+      return {
+        success: false,
+        message: "Failed to update book copies.",
+      };
+    }
+
+    return { success: true, message: "Book borrowed successfully." };
   } catch (error: unknown) {
     return {
       success: false,
