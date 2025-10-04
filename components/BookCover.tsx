@@ -63,7 +63,7 @@ const BookCover: FC<BookCoverProps> = ({
             urlEndpoint={imageKit.urlEndpoint}
             loading="lazy"
             lqip={{ active: true }}
-            alt="book cover "
+            alt="book cover"
             fill
             className="rounded-sm object-fill"
           />

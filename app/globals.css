@@ -218,6 +218,10 @@
   }
 
   /* Borrowed Book */
+  .borrowed-book_wrapper {
+    @apply size-fit sm:w-[280px] md:h-[464px] gap-5 px-5 py-4 shadow-sm rounded-2xl;
+  }
+
   .borrowed-book {
     @apply p-5 rounded-2xl sm:w-min w-full relative;
   }

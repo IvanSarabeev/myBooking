@@ -24,7 +24,7 @@ const ProfilePage: FC = async () => {
   };
 
   const userId = session.user.id;
-  const borrowedBooks = await getBorrowedBooks(userId);
+  const borrowedBooks = await getBorrowedBooks(userId, 10, true);
 
   return (
     <Fragment>

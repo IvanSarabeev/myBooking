@@ -17,9 +17,18 @@ const BorrowedBooks: FC<BorrowedBooksProps> = ({
       <h2 className="font-bebas-neue text-3xl text-light-100">{title}</h2>
 
       <ul className="book-list">
-        {/*{books?.map((book) => (*/}
-        {/*  <BookCard key={book.id} {...book} />*/}
-        {/*))}*/}
+        {books?.map((borrowed) => (
+          <BookCard
+            key={borrowed.id}
+            borrowed={{
+              borrowDate: borrowed.borrowDate,
+              dueDate: borrowed.dueDate,
+              returnDate: borrowed.returnDate,
+              status: borrowed.status,
+            }}
+            {...borrowed.books}
+          />
+        ))}
       </ul>
     </section>
   );
