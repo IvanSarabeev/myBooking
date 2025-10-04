@@ -14,11 +14,6 @@ import {
 } from "@/components/ui/tooltip";
 import { usePathname } from "next/navigation";
 
-// type Props = Pick<
-//   Book,
-//   "id" | "title" | "genre" | "coverColor" | "coverUrl" | "isLoanedBook"
-// >;
-
 type BaseBookProps = Pick<
   Book,
   "id" | "title" | "genre" | "coverColor" | "coverUrl"
@@ -38,7 +33,6 @@ const BookCard: FC<BorrowBookProps> = ({
   coverUrl,
   coverColor,
   borrowed,
-  // isLoanedBook = false,
 }) => {
   const pathname = usePathname();
 

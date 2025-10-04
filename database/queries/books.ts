@@ -3,7 +3,7 @@ import { booksSchema } from "@/database";
 import { desc, eq } from "drizzle-orm";
 import { revalidateTag, unstable_cache } from "next/cache";
 
-const LATEST_BOOKS_LIMIT = 10;
+const LATEST_BOOKS_LIMIT = 7;
 const LATEST_BOOKS_CACHE_KEY = "latest-books";
 
 /**

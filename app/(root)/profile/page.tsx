@@ -1,7 +1,5 @@
 import { FC, Fragment } from "react";
 import { auth, signOut } from "@/auth";
-import { Button } from "@/components/ui/button";
-import BookList from "@/components/BookList";
 import { getBorrowedBooks } from "@/lib/actions/user";
 import { redirect } from "next/navigation";
 import BorrowedBooks from "@/components/BorrowedBooks";
@@ -24,14 +22,10 @@ const ProfilePage: FC = async () => {
   };
 
   const userId = session.user.id;
-  const borrowedBooks = await getBorrowedBooks(userId, 10, true);
+  const borrowedBooks = await getBorrowedBooks(userId);
 
   return (
     <Fragment>
-      <form action={handleLogout} className="mb-10">
-        <Button>Logout</Button>
-      </form>
-
       <BorrowedBooks
         title={"Borrowed books"}
         books={borrowedBooks}

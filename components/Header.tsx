@@ -1,19 +1,29 @@
-"use client";
-
 import { FC } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { cn, getNameInitials } from "@/lib/utils";
 import Image from "next/image";
 import { Session } from "next-auth";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import NavigationMenu from "@/components/NavigationMenu";
+import { signOut } from "@/auth";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   sessionDetails: Session;
 };
 
 const Header: FC<Props> = ({ sessionDetails }) => {
-  const pathname = usePathname();
+  /**
+   * This is an asynchronous function that handles user logout operations.
+   * It uses server-side functionality to securely sign the user out of their session.
+   *
+   * @returns {Promise<void>} A promise that resolves once the user has been successfully logged out.
+   */
+  const handleLogout = async (): Promise<void> => {
+    "use server";
+
+    return await signOut();
+  };
 
   return (
     <header className="my-10 flex justify-between gap-5">
@@ -27,18 +37,8 @@ const Header: FC<Props> = ({ sessionDetails }) => {
         />
       </Link>
 
-      <ul className="flex flex-row items-center gap-8">
-        <li>
-          <Link
-            href="/library"
-            className={cn(
-              "text-base cursor-pointer capitalize",
-              pathname === "/library" ? "text-light-200" : "text-light-100",
-            )}
-          >
-            Library
-          </Link>
-        </li>
+      <ul className="flex flex-row items-center gap-6">
+        <NavigationMenu />
 
         <li>
           <Link
@@ -53,6 +53,29 @@ const Header: FC<Props> = ({ sessionDetails }) => {
             </Avatar>
             <p className="text-light-100">{sessionDetails?.user?.name || ""}</p>
           </Link>
+        </li>
+
+        <li>
+          <form action={handleLogout}>
+            <Button
+              type="submit"
+              size="icon"
+              variant="ghost"
+              className={cn(
+                "hover:bg-transparent fill-none outline-none hover:scale-110 transform duration-300 cursor-pointer",
+              )}
+            >
+              <Image
+                src="/icons/logout.svg"
+                alt="logout icon"
+                height={24}
+                width={24}
+                decoding="async"
+                loading="lazy"
+              />
+              <span className="sr-only">Logout Button</span>
+            </Button>
+          </form>
         </li>
       </ul>
     </header>
