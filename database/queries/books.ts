@@ -2,8 +2,6 @@ import { db } from "@/database/drizzle";
 import { booksSchema, borrowRecordsSchema } from "@/database";
 import { desc, eq } from "drizzle-orm";
 import { revalidateTag, unstable_cache } from "next/cache";
-import dayjs from "dayjs";
-import { bookSchema } from "@/lib/validations";
 
 const LATEST_BOOKS_LIMIT = 10;
 const LATEST_BOOKS_CACHE_KEY = "latest-books";
@@ -82,54 +80,4 @@ export const getBookById = async (id: string): Promise<Book | undefined> => {
     .limit(1);
 
   return book[0] as Book | undefined;
-};
-
-/**
- * Handles the action of borrowing a book by a user.
- *
- * @param {BorrowBookParams} parameters - An object containing the parameters required for borrowing a book.
- * @param {string} parameters.bookId - The ID of the book being borrowed.
- * @param {string} parameters.userId - The ID of the user borrowing the book.
- * @returns {Promise<{ success: boolean; data?: any; message: string }>} An object indicating whether the book was successfully borrowed.
- */
-export const borrowBookAction = async (
-  parameters: BorrowBookParams,
-): Promise<{ success: boolean; data?: any; message: string }> => {
-  const { bookId, userId } = parameters;
-
-  const borrowBookResult = await db
-    .select({
-      availableCopies: booksSchema.availableCopies,
-    })
-    .from(booksSchema)
-    .where(eq(booksSchema.id, bookId))
-    .limit(1);
-
-  if (!borrowBookResult.length || borrowBookResult[0].availableCopies !== 0) {
-    return {
-      success: false,
-      message: "Book is not available",
-    };
-  }
-
-  const dueData = dayjs().add(7, "day").toDate();
-
-  // @ts-ignore
-  const record = db.insert(borrowRecordsSchema).values({
-    userId,
-    bookId,
-    dueData,
-    status: "BORROWED",
-  });
-
-  await db
-    .update(booksSchema)
-    .set({ availableCopies: borrowBookResult[0].availableCopies - 1 })
-    .where(eq(booksSchema.id, bookId));
-
-  return {
-    success: true,
-    data: JSON.parse(JSON.stringify(record)),
-    message: "Borrowed successfully",
-  };
 };

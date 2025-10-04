@@ -1,9 +1,9 @@
 "use server";
 
-import { borrowBookAction } from "@/database/queries/books";
 import { db } from "@/database/drizzle";
-import { usersSchema } from "@/database";
+import { booksSchema, borrowRecordsSchema, usersSchema } from "@/database";
 import { eq } from "drizzle-orm";
+import dayjs from "dayjs";
 
 /**
  * Handles the borrowing of a book by a user.
@@ -19,7 +19,7 @@ import { eq } from "drizzle-orm";
  */
 export const borrowBook = async (
   parameters: BorrowBookParams,
-): Promise<{ success: boolean; data?: any; message: string }> => {
+): Promise<{ success: boolean; message: string }> => {
   const { bookId, userId } = parameters;
 
   if (!bookId || !userId)
@@ -29,7 +29,50 @@ export const borrowBook = async (
     };
 
   try {
-    return await borrowBookAction(parameters);
+    const borrowBookResult = await db
+      .select({
+        availableCopies: booksSchema.availableCopies,
+      })
+      .from(booksSchema)
+      .where(eq(booksSchema.id, bookId))
+      .limit(1);
+
+    if (!borrowBookResult.length || borrowBookResult[0].availableCopies <= 0) {
+      return {
+        success: false,
+        message: "Book is not available",
+      };
+    }
+
+    const dueDate = dayjs().add(7, "day").toDate().toDateString();
+    const BORROWED: BorrowBookStatus["status"] = "BORROWED";
+
+    const record = await db
+      .insert(borrowRecordsSchema)
+      .values({
+        userId,
+        bookId,
+        dueDate,
+        status: BORROWED,
+      })
+      .returning();
+
+    if (!record.length) {
+      return {
+        success: false,
+        message: "An error occurred while borrowing the book.",
+      };
+    }
+
+    await db
+      .update(booksSchema)
+      .set({ availableCopies: borrowBookResult[0].availableCopies - 1 })
+      .where(eq(booksSchema.id, bookId));
+
+    return {
+      success: true,
+      message: "Borrowed successfully",
+    };
   } catch (error: unknown) {
     return {
       success: false,
@@ -58,11 +101,13 @@ export const canUserBorrowBook = async (
 
   if (!user) return null;
 
+  const APPROVED: UserStatus["status"] = "APPROVED";
+
   return {
-    isEligible: availableCopies > 0 && user.status === "APPROVED",
+    isEligible: availableCopies > 0 && user.status === APPROVED,
     message:
-      availableCopies <= 0
-        ? "Book is not available"
+      availableCopies > 0 && user.status === "APPROVED"
+        ? "Book is available"
         : "You are not eligible to borrow this book",
   };
 };

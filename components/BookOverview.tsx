@@ -64,11 +64,13 @@ const BookOverview: FC<BookOverviewProps> = async ({
 
         <p className="book-description">{description}</p>
 
-        <BorrowBook
-          bookId={id as string}
-          userId={userId}
-          borrowingEligibility={isUserEligible}
-        />
+        {isUserEligible !== null && (
+          <BorrowBook
+            bookId={id as string}
+            userId={userId}
+            borrowingEligibility={isUserEligible}
+          />
+        )}
       </div>
 
       <div className="relative flex flex-1 justify-center">
