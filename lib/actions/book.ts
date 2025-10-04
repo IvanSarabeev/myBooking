@@ -29,50 +29,52 @@ export const borrowBook = async (
     };
 
   try {
-    const borrowBookResult = await db
-      .select({
-        availableCopies: booksSchema.availableCopies,
-      })
-      .from(booksSchema)
-      .where(eq(booksSchema.id, bookId))
-      .limit(1);
+    return await db.transaction(async (tx) => {
+      const [book] = await tx
+        .select({ availableCopies: booksSchema.availableCopies })
+        .from(booksSchema)
+        .where(eq(booksSchema.id, bookId))
+        .limit(1);
 
-    if (!borrowBookResult.length || borrowBookResult[0].availableCopies <= 0) {
+      if (!book || book.availableCopies <= 0) {
+        return {
+          success: false,
+          message: "Book is not available",
+        };
+      }
+
+      const dueDate = dayjs().add(7, "day").toDate().toDateString();
+      const BORROWED: BorrowBookStatus["status"] = "BORROWED";
+
+      const insertRecord = await tx
+        .insert(borrowRecordsSchema)
+        .values({
+          userId,
+          bookId,
+          status: BORROWED,
+          dueDate,
+        })
+        .returning();
+
+      if (!insertRecord?.length) {
+        // Rollback Transactions
+        tx.rollback();
+        return {
+          success: false,
+          message: "An error occurred while borrowing the book.",
+        };
+      }
+
+      await tx
+        .update(booksSchema)
+        .set({ availableCopies: book.availableCopies - 1 })
+        .where(eq(booksSchema.id, bookId));
+
       return {
-        success: false,
-        message: "Book is not available",
+        success: true,
+        message: "Book borrowed successfully",
       };
-    }
-
-    const dueDate = dayjs().add(7, "day").toDate().toDateString();
-    const BORROWED: BorrowBookStatus["status"] = "BORROWED";
-
-    const record = await db
-      .insert(borrowRecordsSchema)
-      .values({
-        userId,
-        bookId,
-        dueDate,
-        status: BORROWED,
-      })
-      .returning();
-
-    if (!record.length) {
-      return {
-        success: false,
-        message: "An error occurred while borrowing the book.",
-      };
-    }
-
-    await db
-      .update(booksSchema)
-      .set({ availableCopies: borrowBookResult[0].availableCopies - 1 })
-      .where(eq(booksSchema.id, bookId));
-
-    return {
-      success: true,
-      message: "Borrowed successfully",
-    };
+    });
   } catch (error: unknown) {
     return {
       success: false,
