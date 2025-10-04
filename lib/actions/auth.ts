@@ -24,7 +24,7 @@ if (!prodEndpoint) throw new Error("API server URL is not defined");
 /**
  * Handles user sign-in using email and password credentials.
  *
- * @param {Object} parameters - The object containing authentication credentials.
+ * @param {UserCredentials} parameters - The object containing authentication credentials.
  * @param {string} parameters.email - The user's email address.
  * @param {string} parameters.password - The user's password.
  *
@@ -33,7 +33,7 @@ if (!prodEndpoint) throw new Error("API server URL is not defined");
  * @returns {string | undefined} returns.error - Contains the error message if the sign-in operation fails.
  */
 export const signInWithCredentials = async (
-  parameters: Pick<AuthCredentials, "email" | "password">,
+  parameters: UserCredentials,
 ): Promise<object> => {
   const { email, password } = parameters;
 
@@ -64,7 +64,7 @@ export const signInWithCredentials = async (
  * and saves the new user's details into the database.
  * Also initiates a sign-in process upon successful registration.
  *
- * @param {AuthCredentials} parameters - An object containing user credentials.
+ * @param {UserAuthCredentials} parameters - An object containing user credentials.
  * @param {string} parameters.email - The email address of the user.
  * @param {string} parameters.password - The password for the account.
  * @param {string} parameters.fullName - The full name of the user.
@@ -76,7 +76,9 @@ export const signInWithCredentials = async (
  * @returns {boolean} return.success - Indicates whether the signup was successful.
  * @returns {string} [return.error] - Provides an error message in case of failure.
  */
-export const signUp = async (parameters: AuthCredentials): Promise<object> => {
+export const signUp = async (
+  parameters: UserAuthCredentials,
+): Promise<object> => {
   const { email, password, fullName, universityId, universityCard } =
     parameters;
 
