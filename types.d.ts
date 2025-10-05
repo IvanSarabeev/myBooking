@@ -124,3 +124,5 @@ interface UserAuthCredentials extends Pick<User, "fullName">, UserCredentials {
   universityId: number;
   universityCard: string;
 }
+
+type FilterOptions = "all" | "author" | "title" | "genre" | "rating";

@@ -1,6 +1,8 @@
+import { ArrowDown, BookOpen, Type, User } from "lucide-react";
+
 export const navigationLinks = [
   {
-    href: "/library",
+    href: "/search",
     label: "Library",
   },
 
@@ -190,3 +192,10 @@ export const sampleBooks = [
       "Morgan Housel explores the unique behaviors and mindsets that shape financial success and decision-making.",
   },
 ];
+
+export const filterOptions = [
+  { id: "all", title: "All", icon: ArrowDown },
+  { id: "genre", title: "Genre", icon: BookOpen },
+  { id: "title", title: "Title", icon: Type },
+  { id: "author", title: "Author", icon: User },
+] as const;

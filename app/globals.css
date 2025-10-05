@@ -346,23 +346,23 @@
   }
 
   /* Not Found */
-  #not-found {
+  .not-found {
     @apply flex justify-center items-center flex-col text-center w-full;
   }
 
-  #not-found h4 {
+  .not-found h4 {
     @apply text-white mt-6 font-semibold text-2xl;
   }
 
-  #not-found p {
+  .not-found p {
     @apply text-light-100 w-[360px] mt-1;
   }
 
   .not-found-btn {
-    @apply bg-primary font-bebas-neue min-w-[360px] mt-6 text-dark-100 text-xl hover:bg-primary/90 min-h-12;
+    @apply bg-primary font-bebas-neue min-w-[360px] mt-6 text-dark-100 text-xl hover:bg-primary/90 min-h-12 cursor-pointer;
   }
 
-  /* Pagination */
+  /* BooksPagination */
   #pagination {
     @apply flex flex-row justify-end gap-3;
   }
