@@ -5,7 +5,7 @@ import BookCard from "@/components/BookCard";
 import SearchFilterDropdown from "@/components/SearchFilterDropdown";
 import { useSearchParams } from "next/navigation";
 import EmptyState from "@/components/EmptyState";
-import { Loader } from "lucide-react";
+import BooksListSkeleton from "@/components/BooksListSkeleton";
 
 type BookListProps = {
   title: string;
@@ -65,13 +65,7 @@ const BookList: FC<BookListProps> = ({
       </div>
 
       {isLoading || isPending ? (
-        <div className="flex justify-center items-center h-60 mt-18">
-          <Loader
-            height={324}
-            width={324}
-            className="animate-spin text-light-200"
-          />
-        </div>
+        <BooksListSkeleton />
       ) : (
         <ul className="book-list">
           {books?.map((book) => (
