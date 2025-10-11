@@ -1,20 +1,18 @@
 import { FC } from "react";
-import { auth } from "@/auth";
 import { getUserById } from "@/lib/actions/user";
 import UserStatusLabel from "@/components/UserStatusLabel";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { getNameInitials } from "@/lib/utils";
 import Image from "next/image";
 
-const ProfileInfo: FC = async () => {
-  const sessionDetails = await auth();
+type ProfileInfoProps = {
+  userId: string;
+};
 
-  const userId = sessionDetails?.user?.id?.toString() || "";
+const ProfileInfo: FC<ProfileInfoProps> = async ({ userId }) => {
   const user = await getUserById(userId);
 
   if (!user) return;
-
-  const status = user.status;
 
   return (
     <section className="relative w-full h-fit sm:max-w-[566px] flex flex-col gap-y-6 md:gap-8 xl:gap-9 p-10 pt-28 bg-gradient-to-r from-[#232839] from-60% to-[#12141D] rounded-[20px] text-light-100 mx-auto">
@@ -36,7 +34,7 @@ const ProfileInfo: FC = async () => {
             </AvatarFallback>
           </Avatar>
           <div className="gap-y-2.5 flex flex-col items-start text-start text-light-100">
-            <UserStatusLabel status={status} />
+            <UserStatusLabel status={user.status} />
             <p className="text-2xl leading-7 font-semibold tracking-tight">
               {user.fullName}
             </p>

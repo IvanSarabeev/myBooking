@@ -16,7 +16,7 @@ const ProfilePage: FC = async () => {
   return (
     <Fragment>
       <section className="flex flex-col lg:flex-row items-start gap-y-6 lg:gap-x-10">
-        <ProfileInfo />
+        <ProfileInfo userId={userId} />
 
         <BorrowedBooks title={"Borrowed books"} books={borrowedBooks} />
       </section>
