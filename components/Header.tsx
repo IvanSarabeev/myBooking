@@ -25,6 +25,8 @@ const Header: FC<Props> = ({ sessionDetails }) => {
     return await signOut();
   };
 
+  const userName = sessionDetails.user?.name || "";
+
   return (
     <header className="my-10 flex justify-between gap-5">
       <Link href="/">
@@ -48,10 +50,12 @@ const Header: FC<Props> = ({ sessionDetails }) => {
           >
             <Avatar className="transition-all hover:scale-105">
               <AvatarFallback className="text-dark-700 bg-amber-100 hover:bg-amber-50">
-                {getNameInitials(sessionDetails?.user?.name || "")}
+                {getNameInitials(userName)}
               </AvatarFallback>
             </Avatar>
-            <p className="text-light-100">{sessionDetails?.user?.name || ""}</p>
+            <p className="text-light-100">
+              {userName.includes(" ") ? userName?.split(" ")[0] : userName}
+            </p>
           </Link>
         </li>
 

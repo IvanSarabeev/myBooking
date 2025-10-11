@@ -199,3 +199,9 @@ export const filterOptions = [
   { id: "title", title: "Title", icon: Type },
   { id: "author", title: "Author", icon: User },
 ] as const;
+
+export const USER_STATUS_TYPES = {
+  APPROVED: "APPROVED",
+  PENDING: "PENDING",
+  REJECTED: "REJECTED",
+} as const;

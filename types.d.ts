@@ -89,6 +89,7 @@ interface UserStatus {
  * @interface User
  * @property {string} id - The unique identifier for the user.
  * @property {string} fullName - The full name of the user.
+ * @property {string} email - The email of the user.
  * @property {typeof UserStatus} [status] - The current status of the user. This is optional.
  * @property {Date} createdAt - The date and time when the user was created.
  * @property {Date} lastActivityDate - The date and time of the user's last activity.
@@ -96,9 +97,10 @@ interface UserStatus {
 interface User {
   id: string;
   fullName: string;
+  email?: string;
   status?: typeof UserStatus;
-  createdAt: Date;
-  lastActivityDate: Date;
+  createdAt: Date | null;
+  lastActivityDate: Date | null;
 }
 
 /**

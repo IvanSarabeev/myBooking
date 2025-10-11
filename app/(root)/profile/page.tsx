@@ -3,6 +3,7 @@ import { auth, signOut } from "@/auth";
 import { getBorrowedBooks } from "@/lib/actions/user";
 import { redirect } from "next/navigation";
 import BorrowedBooks from "@/components/BorrowedBooks";
+import ProfileInfo from "@/components/ProfileInfo";
 
 const ProfilePage: FC = async () => {
   const session = await auth();
@@ -26,11 +27,11 @@ const ProfilePage: FC = async () => {
 
   return (
     <Fragment>
-      <BorrowedBooks
-        title={"Borrowed books"}
-        books={borrowedBooks}
-        containerClassName="mt-20"
-      />
+      <section className="flex flex-col lg:flex-row items-start gap-y-6 lg:gap-x-10">
+        <ProfileInfo />
+
+        <BorrowedBooks title={"Borrowed books"} books={borrowedBooks} />
+      </section>
     </Fragment>
   );
 };
