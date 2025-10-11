@@ -50,6 +50,13 @@ export const FIELD_NAMES = {
   universityCard: "Upload University ID Card (file upload)",
 };
 
+export const FIELD_PLACEHOLDERS = {
+  fullName: "John Doe",
+  email: "your email address",
+  universityId: "eg 394365762",
+  password: "Atleast 8 characters long",
+};
+
 export const FIELD_TYPES = {
   fullName: "text",
   email: "email",

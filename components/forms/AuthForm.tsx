@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
+import { FIELD_NAMES, FIELD_PLACEHOLDERS, FIELD_TYPES } from "@/constants";
 import FileUpload from "@/components/FileUpload";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -127,6 +127,11 @@ const AuthForm = <T extends FieldValues>({
                         ) : (
                           <Input
                             required
+                            placeholder={
+                              FIELD_PLACEHOLDERS[
+                                field.name as keyof typeof FIELD_TYPES
+                              ]
+                            }
                             type={
                               FIELD_NAMES[
                                 field.name as keyof typeof FIELD_TYPES
