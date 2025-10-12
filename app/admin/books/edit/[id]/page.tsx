@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import BookForm from "@/components/admin/forms/BookForm";
 
-const Page: FC = () => {
+const EditBookPage: FC = () => {
   return (
     <Fragment>
       <Button className="back-btn bg-primary-admin" asChild>
@@ -17,4 +17,4 @@ const Page: FC = () => {
   );
 };
 
-export default Page;
+export default EditBookPage;

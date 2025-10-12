@@ -9,10 +9,10 @@ type HeaderProps = {
 
 const Header: FC<HeaderProps> = ({ session }) => {
   return (
-    <header className="admin-header">
+    <header className="admin-header max-w-6xl">
       <div>
         <h2 className="text-dark-400 font-semibold text-2xl">
-          {session?.user?.name}
+          Welcome, {session?.user?.name}
         </h2>
         <p className="text-slate-500 text-base">
           Monitor all of your users and books here

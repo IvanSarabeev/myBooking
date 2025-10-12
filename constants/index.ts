@@ -212,3 +212,11 @@ export const USER_STATUS_TYPES = {
   PENDING: "PENDING",
   REJECTED: "REJECTED",
 } as const;
+
+export const bookTableColumns = [
+  { id: "title", title: "Book Title", style: "w-4/10" },
+  { id: "author", title: "Author", style: "w-1/6" },
+  { id: "genre", title: "Genre", style: "w-1/6" },
+  { id: "date_created", title: "Date Created", style: "w-1/6" },
+  { id: "action", title: "Action", style: "w-1/12" },
+] as const;

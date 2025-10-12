@@ -633,8 +633,12 @@
     @apply lg:mt-36 mt-16 mb-20 flex flex-col gap-16 lg:flex-row;
   }
 
+  .book-details-reverse {
+    @apply mt-16 mb-20 flex flex-col gap-16 lg:flex-row-reverse;
+  }
+
   .book-details h3 {
-    @apply text-xl font-semibold text-primary;
+    @apply text-xl font-semibold;
   }
 
   /* Library */
@@ -648,6 +652,12 @@
 
   .library-title {
     @apply mt-2 text-3xl font-semibold text-white sm:text-5xl;
+  }
+
+  /* Common Classes*/
+
+  .back-btn {
+
   }
 }
 
