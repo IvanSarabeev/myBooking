@@ -138,6 +138,15 @@ interface AccountRequestUser {
   createdAt: Date | null;
   lastActivityDate: Date | null;
 }
+// Region - Sorting Options used within TableSortOptions Component
+type BookSortOptions =
+  | "alphabetical"
+  | "oldest"
+  | "latest"
+  | "author"
+  | "genre";
+
+type AccountRequestSortOptions = "oldest" | "latest";
 
 type AllUsersSortOptions = "alphabetical" | "oldest" | "latest" | "records";
 
@@ -145,3 +154,4 @@ type SortOption<T extends string> = {
   id: T;
   title: string;
 };
+// End of Region - Sorting Options used within TableSortOptions Component

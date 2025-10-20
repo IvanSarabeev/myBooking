@@ -20,12 +20,15 @@ const BooksTable: FC = async () => {
   return (
     <Table className="w-full h-fit max-w-6xl rounded-md">
       <TableHeader className="rounded-t-lg border-b border-[#EDF1F1] rounded text-sm font-normal leading-5 tracking-tighter bg-light-300">
-        {bookTableColumns.map((item) => (
-          <TableHead key={item.id} className={`${item.style} py-4 p-2.5`}>
-            {item.title}
-          </TableHead>
-        ))}
+        <TableRow className="border-b border-[#EDF1F1]">
+          {bookTableColumns.map((item) => (
+            <TableHead key={item.id} className={`${item.style} py-4 p-2.5`}>
+              {item.title}
+            </TableHead>
+          ))}
+        </TableRow>
       </TableHeader>
+
       <TableBody>
         {books.map((book) => {
           const createdAt = dayjs(book.createdAt).format("MMM DD YYYY");

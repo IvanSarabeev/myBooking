@@ -2,7 +2,6 @@ import { FC, Fragment } from "react";
 import BookCover from "@/components/BookCover";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { ArrowLeft } from "lucide-react";
 import BookDetails from "@/components/BookDetails";
 import BackButton from "@/components/admin/BackButton";
 

@@ -214,6 +214,14 @@ export const USER_STATUS_TYPES = {
 } as const;
 
 // Region Books
+export const bookSortOptions: SortOption<BookSortOptions>[] = [
+  { id: "alphabetical", title: "A-Z" },
+  { id: "latest", title: "Newest" },
+  { id: "oldest", title: "Oldest" },
+  { id: "author", title: "Author" },
+  { id: "genre", title: "Genre" },
+] as const;
+
 export const bookTableColumns = [
   { id: "title", title: "Book Title", style: "w-4/10" },
   { id: "author", title: "Author", style: "w-1/6" },
@@ -224,10 +232,11 @@ export const bookTableColumns = [
 // End of Region Books
 
 // Region Account Request
-export const accountRequestSortOptions = [
-  { id: "oldest", title: "Oldest Request" },
-  { id: "latest", title: "Newest Request" },
-] as const;
+export const accountRequestSortOptions: SortOption<AccountRequestSortOptions>[] =
+  [
+    { id: "oldest", title: "Oldest Request" },
+    { id: "latest", title: "Newest Request" },
+  ] as const;
 
 export const accountRequestTableColumns = [
   { id: "name", title: "Name", style: "w-2/10" },
@@ -244,7 +253,7 @@ export const allUsersSortOptions: SortOption<AllUsersSortOptions>[] = [
   { id: "oldest", title: "Oldest Request" },
   { id: "latest", title: "Newest Request" },
   { id: "records", title: "Borrowed Records" },
-];
+] as const;
 
 export const allUsersTableColumn = [
   { id: "name", title: "Name", style: "w-2/10" },

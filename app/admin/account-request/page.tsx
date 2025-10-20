@@ -1,8 +1,9 @@
 import { FC, Fragment } from "react";
-import SortAccounts from "@/components/admin/SortAccounts";
 import { getRequestedUsers } from "@/lib/admin/actions/users";
 import AccountRequestTable from "@/components/admin/AccountRequestTable";
 import AdminPagination from "@/components/admin/AdminPagination";
+import TableSortOptions from "@/components/TableSortOptions";
+import { accountRequestSortOptions } from "@/constants";
 
 type AccountRequestPageProps = {
   searchParams: Promise<{ page?: string; sort?: "latest" | "oldest" }>;
@@ -40,7 +41,10 @@ const AccountRequestPage: FC<AccountRequestPageProps> = async ({
           Account Registration Requests
         </h1>
 
-        <SortAccounts selected={sort} isDisabled={data?.length === 0} />
+        <TableSortOptions<AccountRequestSortOptions>
+          options={accountRequestSortOptions}
+          variants="base"
+        />
       </div>
 
       {Array.isArray(data) && data.length > 0 ? (
