@@ -213,6 +213,7 @@ export const USER_STATUS_TYPES = {
   REJECTED: "REJECTED",
 } as const;
 
+// Region Books
 export const bookTableColumns = [
   { id: "title", title: "Book Title", style: "w-4/10" },
   { id: "author", title: "Author", style: "w-1/6" },
@@ -220,7 +221,9 @@ export const bookTableColumns = [
   { id: "date_created", title: "Date Created", style: "w-1/6" },
   { id: "action", title: "Action", style: "w-1/12" },
 ] as const;
+// End of Region Books
 
+// Region Account Request
 export const accountRequestSortOptions = [
   { id: "oldest", title: "Oldest Request" },
   { id: "latest", title: "Newest Request" },
@@ -233,3 +236,23 @@ export const accountRequestTableColumns = [
   { id: "university_id_card", title: "University ID Card", style: "w-1/6" },
   { id: "actions", title: "Actions", style: "w-1/12" },
 ] as const;
+// End of Region Account Request
+
+// Region All Users
+export const allUsersSortOptions: SortOption<AllUsersSortOptions>[] = [
+  { id: "alphabetical", title: "A-Z" },
+  { id: "oldest", title: "Oldest Request" },
+  { id: "latest", title: "Newest Request" },
+  { id: "records", title: "Borrowed Records" },
+];
+
+export const allUsersTableColumn = [
+  { id: "name", title: "Name", style: "w-2/10" },
+  { id: "date", title: "Date Joined", style: "w-1/6" },
+  { id: "role", title: "Role", style: "w-1/6" },
+  { id: "borrowed_books", title: "Books Borrowed", style: "w-1/6" },
+  { id: "university_id", title: "University ID No", style: "w-1/6" },
+  { id: "university_id_card", title: "University ID Card", style: "w-1/6" },
+  { id: "actions", title: "Actions", style: "w-1/12" },
+] as const;
+// End of Region All Users

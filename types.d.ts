@@ -138,3 +138,10 @@ interface AccountRequestUser {
   createdAt: Date | null;
   lastActivityDate: Date | null;
 }
+
+type AllUsersSortOptions = "alphabetical" | "oldest" | "latest" | "records";
+
+type SortOption<T extends string> = {
+  id: T;
+  title: string;
+};
