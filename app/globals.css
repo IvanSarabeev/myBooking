@@ -407,11 +407,11 @@
   }
 
   .confirm-approve {
-    @apply bg-green-100 text-green-800 hover:bg-green-100/70;
+    @apply bg-[#4C7B62] text-green-800 hover:bg-green-100/70;
   }
 
   .confirm-reject {
-    @apply bg-red-100 text-red-800 hover:bg-red-100/70;
+    @apply bg-[#F46F70] text-red-800 hover:bg-red-100/70;
   }
 
   .confirm-content {
@@ -427,7 +427,7 @@
   }
 
   .confirm-btn {
-    @apply w-full min-h-14 rounded-xl font-bold text-base text-light-800;
+    @apply w-full min-h-14 rounded-xl font-bold text-base leading-6 tracking-normal text-light-800 cursor-pointer;
   }
 
   /* Book Form */
