@@ -128,3 +128,13 @@ interface UserAuthCredentials extends Pick<User, "fullName">, UserCredentials {
 }
 
 type FilterOptions = "all" | "author" | "title" | "genre" | "rating";
+
+interface AccountRequestUser {
+  id: string;
+  fullName: string;
+  email: string;
+  universityId: number;
+  status: UserStatus["status"];
+  createdAt: Date | null;
+  lastActivityDate: Date | null;
+}

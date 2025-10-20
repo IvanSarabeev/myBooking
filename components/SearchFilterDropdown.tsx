@@ -66,7 +66,7 @@ const SearchFilterDropdown: FC<SearchFilterDropdownProps> = ({
         </span>
         <div>
           <span className="sr-only">Dropdown Icon</span>
-          <ArrowDown height={18} width={18} />
+          <ArrowDown size={18} />
         </div>
       </DropdownMenuTrigger>
 

@@ -14,7 +14,7 @@ const Page: FC = () => {
           <Button className="flex items-center gap-2 py-1.5 px-3 text-dark-100 text-sm tracking-tight border border-[#F8F8FF] bg-white cursor-pointer hover:text-light-100 hover:bg-primary-admin">
             A-Z
             {/*  TODO: Create a Sorting Filter for Admin book list*/}
-            <ArrowDownNarrowWide />
+            <ArrowDownNarrowWide size={16} />
           </Button>
           <Button className="bg-primary-admin" asChild>
             <Link href="/admin/books/new" className="text-light-100">

@@ -37,7 +37,7 @@ export const adminSideBarLinks = [
   },
   {
     img: "/icons/admin/user.svg",
-    route: "/admin/account-requests",
+    route: "/admin/account-request",
     text: "Account Requests",
   },
 ] as const;
@@ -219,4 +219,17 @@ export const bookTableColumns = [
   { id: "genre", title: "Genre", style: "w-1/6" },
   { id: "date_created", title: "Date Created", style: "w-1/6" },
   { id: "action", title: "Action", style: "w-1/12" },
+] as const;
+
+export const accountRequestSortOptions = [
+  { id: "oldest", title: "Oldest Request" },
+  { id: "latest", title: "Newest Request" },
+] as const;
+
+export const accountRequestTableColumns = [
+  { id: "name", title: "Name", style: "w-2/10" },
+  { id: "date", title: "Date Joined", style: "w-1/6" },
+  { id: "university_id", title: "University ID No", style: "w-1/6" },
+  { id: "university_id_card", title: "University ID Card", style: "w-1/6" },
+  { id: "actions", title: "Actions", style: "w-1/12" },
 ] as const;

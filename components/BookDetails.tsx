@@ -19,11 +19,13 @@ const BookDetails: FC<BookDetailsProps> = ({
 
   return (
     <section className={`${containerStyle} max-w-6xl`}>
-      <div className="flex flex-col gap-7">
-        <h3 className={`${textStyle} font-bold`}>Video</h3>
+      {videoUrl.length > 0 && (
+        <div className="flex flex-col gap-7">
+          <h3 className={`${textStyle} font-bold`}>Video</h3>
 
-        {videoUrl.length > 0 && <BookVideo videoUrl={videoUrl} />}
-      </div>
+          <BookVideo videoUrl={videoUrl} />
+        </div>
+      )}
 
       <div className="flex flex-col gap-7">
         <h3 className={`${textStyle} font-bold`}>Summary</h3>
