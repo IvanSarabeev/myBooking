@@ -109,6 +109,8 @@ interface UsersList
     "id" | "fullName" | "email" | "createdAt" | "lastActivityDate"
   > {
   role: "ADMIN" | "USER" | null;
+  universityId: number;
+  borrowedBooksCount: number;
 }
 
 /**

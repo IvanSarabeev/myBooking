@@ -1,8 +1,8 @@
 "use server";
 
 import { db } from "@/database/drizzle";
-import { usersSchema } from "@/database";
-import { asc, desc, eq, sql } from "drizzle-orm";
+import { borrowRecordsSchema, usersSchema } from "@/database";
+import { and, asc, desc, eq, sql } from "drizzle-orm";
 import { USER_STATUS_TYPES } from "@/constants";
 import { revalidatePath, unstable_cache } from "next/cache";
 
@@ -177,10 +177,15 @@ export const _getUsers = async (
   };
 }> => {
   const offset = (page - STARTING_PAGE) * limit;
-  const order =
-    sort === "latest"
-      ? desc(usersSchema.createdAt)
-      : asc(usersSchema.createdAt);
+
+  const sortOptions = {
+    alphabetical: asc(usersSchema.fullName),
+    oldest: asc(usersSchema.createdAt),
+    latest: desc(usersSchema.createdAt),
+    records: desc(usersSchema.lastActivityDate),
+  } as const;
+
+  const order = sortOptions[sort] ?? sortOptions.latest;
 
   try {
     // @ts-ignore
@@ -193,8 +198,25 @@ export const _getUsers = async (
         role: usersSchema.role,
         createdAt: usersSchema.createdAt,
         lastActivityDate: usersSchema.lastActivityDate,
+        borrowedBooksCount: sql<number>`count(${borrowRecordsSchema.id})::int`,
       })
       .from(usersSchema)
+      .leftJoin(
+        borrowRecordsSchema,
+        and(
+          eq(usersSchema.id, borrowRecordsSchema.userId),
+          eq(borrowRecordsSchema.status, "BORROWED"),
+        ),
+      )
+      .groupBy(
+        usersSchema.id,
+        usersSchema.fullName,
+        usersSchema.email,
+        usersSchema.universityId,
+        usersSchema.role,
+        usersSchema.createdAt,
+        usersSchema.lastActivityDate,
+      )
       .orderBy(order)
       .limit(limit)
       .offset(offset);
