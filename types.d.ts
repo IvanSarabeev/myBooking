@@ -103,6 +103,14 @@ interface User {
   lastActivityDate: Date | null;
 }
 
+interface UsersList
+  extends Pick<
+    User,
+    "id" | "fullName" | "email" | "createdAt" | "lastActivityDate"
+  > {
+  role: "ADMIN" | "USER" | null;
+}
+
 /**
  * Interface representing user credentials for authentication purposes.
  *
@@ -154,4 +162,4 @@ type SortOption<T extends string> = {
   id: T;
   title: string;
 };
-// End of Region - Sorting Options used within TableSortOptions Component
+// End of Region-Sorting Options used within TableSortOptions Component

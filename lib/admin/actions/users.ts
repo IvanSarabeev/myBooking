@@ -6,9 +6,16 @@ import { asc, desc, eq, sql } from "drizzle-orm";
 import { USER_STATUS_TYPES } from "@/constants";
 import { revalidatePath, unstable_cache } from "next/cache";
 
+// Region Pagination Details
 const STARTING_PAGE = 1;
 const USER_REQUEST_LIMIT = 5;
+const USER_LIST_LIMIT = 6;
+// End of Region Pagination Details
+
+// Region Cache keys
 const GET_REQUESTED_USERS_CACHE_KEY = "get-requested-users";
+const GET_USERS_CACHE_KEY = "get-users";
+// End of Region Cache keys
 
 /**
  * Fetches a paginated, sorted list of users who have requested an account.
@@ -150,6 +157,142 @@ export const changeRequestedStatus = async (
     return {
       success: false,
       message: "An error occurred while changing the user status.",
+    };
+  }
+};
+
+export const _getUsers = async (
+  page: number = STARTING_PAGE,
+  sort: AllUsersSortOptions = "latest",
+  limit: number = USER_LIST_LIMIT,
+): Promise<{
+  success: boolean;
+  message?: string;
+  data?: UsersList[];
+  meta?: {
+    page: number;
+    limit: number;
+    totalCount: number;
+    totalPages: number;
+  };
+}> => {
+  const offset = (page - STARTING_PAGE) * limit;
+  const order =
+    sort === "latest"
+      ? desc(usersSchema.createdAt)
+      : asc(usersSchema.createdAt);
+
+  try {
+    // @ts-ignore
+    const users: UsersList[] = await db
+      .select({
+        id: usersSchema.id,
+        fullName: usersSchema.fullName,
+        email: usersSchema.email,
+        universityId: usersSchema.universityId,
+        role: usersSchema.role,
+        createdAt: usersSchema.createdAt,
+        lastActivityDate: usersSchema.lastActivityDate,
+      })
+      .from(usersSchema)
+      .orderBy(order)
+      .limit(limit)
+      .offset(offset);
+
+    if (!users) {
+      return {
+        success: false,
+        message: "An error occurred while fetching users.",
+        data: [],
+      };
+    }
+
+    const totalResults = await db.execute(
+      sql`SELECT COUNT(*)::int AS count FROM ${usersSchema}`,
+    );
+    const totalCount = Number(totalResults.rows?.[0]?.count ?? 0);
+
+    return {
+      success: true,
+      data: users,
+      meta: {
+        page,
+        limit,
+        totalCount,
+        totalPages: Math.ceil(totalCount / limit),
+      },
+    };
+  } catch (error: unknown) {
+    return {
+      success: false,
+      message: "An error occurred while fetching users.",
+      data: [],
+    };
+  }
+};
+
+const cacheGetUsers = unstable_cache(_getUsers, [GET_USERS_CACHE_KEY], {
+  tags: [GET_USERS_CACHE_KEY],
+});
+
+export const getUsers = async (
+  page: number = STARTING_PAGE,
+  sort: AllUsersSortOptions = "latest",
+  limit: number = USER_LIST_LIMIT,
+  useCache: boolean = true,
+): Promise<{
+  success: boolean;
+  message?: string;
+  data?: UsersList[];
+  meta?: {
+    page: number;
+    limit: number;
+    totalCount: number;
+    totalPages: number;
+  };
+}> => {
+  if (useCache) {
+    return cacheGetUsers(page, sort, limit);
+  }
+
+  return _getUsers(page, sort, limit);
+};
+
+export const changeUserRole = async (
+  userId: string,
+  role: "ADMIN" | "USER" = "USER",
+): Promise<{ success: boolean; message: string }> => {
+  if (!userId) {
+    return {
+      success: false,
+      message: "Invalid user request. Please try again.",
+    };
+  }
+
+  try {
+    const user = await db
+      .select()
+      .from(usersSchema)
+      .where(eq(usersSchema.id, userId))
+      .limit(1);
+
+    if (!user.length) {
+      return {
+        success: false,
+        message: "User not found.",
+      };
+    }
+
+    await db
+      .update(usersSchema)
+      .set({ role })
+      .where(eq(usersSchema.id, userId));
+
+    return { success: true, message: "Operation successful." };
+  } catch (error: unknown) {
+    return {
+      success: false,
+      message: "An error occurred while changing the user role.",
     };
   }
 };
