@@ -292,23 +292,17 @@ export const changeUserRole = async (
   }
 
   try {
-    const user = await db
-      .select()
-      .from(usersSchema)
-      .where(eq(usersSchema.id, userId))
-      .limit(1);
-
-    if (!user.length) {
-      return {
-        success: false,
-        message: "User not found.",
-      };
-    }
-
-    await db
+    const updateUser = await db
       .update(usersSchema)
       .set({ role })
-      .where(eq(usersSchema.id, userId));
+      .where(eq(usersSchema.id, userId))
+      .returning();
+
+    if (!updateUser.length) {
+      return { success: false, message: "Failed to update user role." };
+    }
+
+    revalidatePath("/admin/users");
 
     return { success: true, message: "Operation successful." };
   } catch (error: unknown) {

@@ -262,6 +262,6 @@ export const allUsersTableColumn = [
   { id: "borrowed_books", title: "Books Borrowed", style: "w-1/6" },
   { id: "university_id", title: "University ID No", style: "w-1/6" },
   { id: "university_id_card", title: "University ID Card", style: "w-1/6" },
-  { id: "actions", title: "Actions", style: "w-1/12" },
+  { id: "action", title: "Action", style: "w-2/10" },
 ] as const;
 // End of Region All Users
