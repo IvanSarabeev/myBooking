@@ -12,7 +12,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { getNameInitials } from "@/lib/utils";
 import dayjs from "dayjs";
 import Image from "next/image";
-import UserActions from "@/components/admin/UserActions";
+import UserActions from "@/components/admin/account-request/UserActions";
 import RoleBadge from "@/components/admin/users/RoleBadge";
 import DeleteUserAction from "@/components/admin/users/DeleteUserAction";
 

@@ -1,6 +1,6 @@
 import { FC, Fragment } from "react";
 import { getRequestedUsers } from "@/lib/admin/actions/users";
-import AccountRequestTable from "@/components/admin/AccountRequestTable";
+import AccountRequestTable from "@/components/admin/account-request/AccountRequestTable";
 import AdminPagination from "@/components/admin/AdminPagination";
 import TableSortOptions from "@/components/TableSortOptions";
 import { accountRequestSortOptions } from "@/constants";

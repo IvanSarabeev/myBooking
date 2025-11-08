@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import BooksTable from "@/components/admin/BooksTable";
+import BooksTable from "@/components/admin/books/BooksTable";
 import TableSortOptions from "@/components/TableSortOptions";
 import { bookSortOptions } from "@/constants";
 

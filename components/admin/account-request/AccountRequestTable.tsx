@@ -11,7 +11,7 @@ import { accountRequestTableColumns } from "@/constants";
 import dayjs from "dayjs";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { getNameInitials } from "@/lib/utils";
-import UserActions from "@/components/admin/UserActions";
+import UserActions from "@/components/admin/account-request/UserActions";
 import Image from "next/image";
 
 type AccountRequestsTableProps = {

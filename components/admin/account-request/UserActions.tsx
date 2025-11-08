@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { CircleX } from "lucide-react";
-import AccountRequestModal from "@/components/admin/AccountRequestModal";
+import AccountRequestModal from "@/components/admin/modals/AccountRequestModal";
 
 type UserActionsProps = {
   userId: string;

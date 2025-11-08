@@ -1,6 +1,6 @@
 import { FC, Fragment } from "react";
 import { getBookById } from "@/database/queries/books";
-import BookOverview from "@/components/admin/BookOverview";
+import BookOverview from "@/components/admin/books/BookOverview";
 
 type BookDetailsPageProps = {
   params: Promise<{ id: string }>;
