@@ -312,3 +312,32 @@ export const changeUserRole = async (
     };
   }
 };
+
+export const deleteUser = async (
+  userId: string,
+): Promise<{ success: boolean; message: string }> => {
+  if (!userId) {
+    return {
+      success: false,
+      message: "Invalid user request. Please try again.",
+    };
+  }
+
+  try {
+    const isUserDeleted = await db
+      .delete(usersSchema)
+      .where(eq(usersSchema.id, userId));
+
+    if (!isUserDeleted) {
+      return { success: false, message: "Failed to delete user." };
+    }
+
+    revalidatePath("/admin/users");
+    return { success: true, message: "User deletion successful." };
+  } catch (error: unknown) {
+    return {
+      success: false,
+      message: "An error occurred while deleting the user.",
+    };
+  }
+};
