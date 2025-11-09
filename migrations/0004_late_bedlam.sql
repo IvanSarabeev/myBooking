@@ -1,0 +1,1 @@
+ALTER TABLE "users" ADD COLUMN "university_card" varchar(400) DEFAULT '' NOT NULL;
