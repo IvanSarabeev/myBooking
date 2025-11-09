@@ -15,6 +15,7 @@ const USER_LIST_LIMIT = 6;
 // Region Cache keys
 const GET_REQUESTED_USERS_CACHE_KEY = "get-requested-users";
 const GET_USERS_CACHE_KEY = "get-users";
+const GET_RECENT_ACCOUNT_REQUESTS_CACHE_KEY = "get-recent-account-requests";
 // End of Region Cache keys
 
 /**
@@ -119,6 +120,62 @@ export const getRequestedUsers = async (
   }
 
   return _getRequestedUsers(page, sort, limit);
+};
+
+const _getRecentAccountRequests = async (
+  limit: number = USER_REQUEST_LIMIT,
+): Promise<{
+  success: boolean;
+  data: Pick<AccountRequestUser, "id" | "fullName" | "email">[];
+}> => {
+  try {
+    const recentAccountRequests = await db
+      .select({
+        id: usersSchema.id,
+        fullName: usersSchema.fullName,
+        email: usersSchema.email,
+      })
+      .from(usersSchema)
+      .where(eq(usersSchema.status, USER_STATUS_TYPES.PENDING))
+      .orderBy(desc(usersSchema.createdAt))
+      .limit(limit);
+
+    if (!recentAccountRequests) {
+      return {
+        success: false,
+        data: [],
+      };
+    }
+
+    return {
+      success: true,
+      data: recentAccountRequests,
+    };
+  } catch (error: unknown) {
+    return {
+      success: false,
+      data: [],
+    };
+  }
+};
+
+const cacheGetRecentAccountRequests = unstable_cache(
+  _getRecentAccountRequests,
+  [GET_RECENT_ACCOUNT_REQUESTS_CACHE_KEY],
+  {
+    tags: [GET_RECENT_ACCOUNT_REQUESTS_CACHE_KEY],
+  },
+);
+
+export const getRecentAccountRequests = async (
+  limit: number = USER_REQUEST_LIMIT,
+  useCache: boolean = true,
+) => {
+  if (useCache) {
+    return cacheGetRecentAccountRequests(limit);
+  }
+
+  return _getRecentAccountRequests(limit);
 };
 
 /**

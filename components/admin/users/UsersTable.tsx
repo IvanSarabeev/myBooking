@@ -12,7 +12,6 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { getNameInitials } from "@/lib/utils";
 import dayjs from "dayjs";
 import Image from "next/image";
-import UserActions from "@/components/admin/account-request/UserActions";
 import RoleBadge from "@/components/admin/users/RoleBadge";
 import DeleteUserAction from "@/components/admin/users/DeleteUserAction";
 
@@ -76,7 +75,6 @@ const UsersTable: FC<UsersTableProps> = ({ users }) => {
               </span>
             </TableCell>
 
-            {/*    TODO: Create User action for deleting User */}
             <TableCell className="flex items-center justify-center">
               <DeleteUserAction userId={user.id} />
             </TableCell>

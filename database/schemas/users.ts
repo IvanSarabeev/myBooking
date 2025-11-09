@@ -18,6 +18,7 @@ export const usersSchema = pgTable("users", {
   fullName: varchar("full_name", { length: 255 }).notNull(),
   email: text("email").notNull().unique(),
   universityId: integer("university_id").notNull().unique(),
+  // universityCard: text("university_card").default("").notNull(),
   password: text("password").notNull(),
   status: STATUS_ENUM("status").default("PENDING"),
   role: ROLE_ENUM("role").default("USER"),

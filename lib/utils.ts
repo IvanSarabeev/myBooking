@@ -64,3 +64,30 @@ export const logChalkMessage = (
       consoleLog(chalk.green(logMessage), chalk.green(formattedValue));
   }
 };
+
+const avatarBgColors = [
+  "bg-[#F59E0B]", // amber
+  "bg-[#3B82F6]", // blue
+  "bg-[#10B981]", // emerald
+  "bg-[#8B5CF6]", // violet
+  "bg-[#EF4444]", // red
+  "bg-[#EC4899]", // pink
+  "bg-[#14B8A6]", // teal
+  "bg-[#F97316]", // orange
+] as const;
+
+/**
+ * Calculates and returns an avatar background color based on a given seed.
+ *
+ * @param {string} seed - A string used to generate a consistent color selection.
+ * @returns {string} A background color derived from the seed.
+ */
+export const getAvatarColor = (seed: string): string => {
+  if (!seed) return avatarBgColors[0];
+
+  const seedIndex =
+    seed.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0) &
+    avatarBgColors.length;
+
+  return avatarBgColors[seedIndex];
+};
