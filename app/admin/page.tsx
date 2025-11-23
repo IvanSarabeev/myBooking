@@ -2,15 +2,19 @@ import { FC } from "react";
 import OverviewCard from "@/components/admin/dashboard/OverviewCard";
 import RequestCard from "@/components/admin/dashboard/RequestCard";
 import RecentCard from "@/components/admin/dashboard/RecentCard";
-import { getBooks } from "@/lib/admin/actions/book";
+import { getBooks, getBorrowedBooks } from "@/lib/admin/actions/book";
 import { getRecentAccountRequests } from "@/lib/admin/actions/users";
 
 const BOOKS_PER_VIEW = 5;
 const ACCOUNT_REQUESTS_PER_VIEW = 6;
+const BORROW_REQUESTS_PER_VIEW = 3;
 
 const Page: FC = async () => {
   const recentAddedBooks: Book[] = await getBooks(BOOKS_PER_VIEW, "Latest");
-  const { data } = await getRecentAccountRequests(ACCOUNT_REQUESTS_PER_VIEW);
+  const accountRequests = await getRecentAccountRequests(
+    ACCOUNT_REQUESTS_PER_VIEW,
+  );
+  const borrowedBooks = await getBorrowedBooks(BORROW_REQUESTS_PER_VIEW);
 
   const hasRecentBooks = recentAddedBooks && recentAddedBooks.length > 0;
 
@@ -35,7 +39,8 @@ const Page: FC = async () => {
             title="Borrow Requests"
             description="No Pending Book Requests"
             message="There are no borrow book requests awaiting your review at this time."
-            link="/admin/borrow-requests"
+            link="/admin/book-requests"
+            items={borrowedBooks.data as BorrowRequestData[]}
           />
           <RequestCard
             type="account"
@@ -43,7 +48,7 @@ const Page: FC = async () => {
             description="No Pending Account Requests"
             message="There are currently no account requests awaiting approval."
             link="/admin/account-requests"
-            items={data}
+            items={accountRequests.data}
           />
         </div>
         <RecentCard title="Recently Added Books" books={recentAddedBooks} />

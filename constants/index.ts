@@ -265,3 +265,21 @@ export const allUsersTableColumn = [
   { id: "action", title: "Action", style: "w-2/10" },
 ] as const;
 // End of Region All Users
+
+// Region Borrowed Request
+export const borrowedRequestSortOptions: SortOption<BorrowedBooksSortOptions>[] =
+  [
+    { id: "oldest", title: "Oldest Request" },
+    { id: "latest", title: "Newest Request" },
+  ] as const;
+
+export const borrowedBookTableColumn = [
+  { id: "book", title: "Book", style: "w-1/10" },
+  { id: "user", title: "User Requested", style: "w-1/10" },
+  { id: "status", title: "Status", style: "w-1/6" },
+  { id: "borrowed_date", title: "Borrowed date", style: "w-1/6" },
+  { id: "return_date", title: "Return date", style: "w-1/6" },
+  { id: "due_date", title: "Due date", style: "w-1/6" },
+  { id: "receipt", title: "Receipt", style: "w-1/10" },
+] as const;
+// End of Region Borrowed Request

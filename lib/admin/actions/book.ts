@@ -3,11 +3,22 @@
 import { db } from "@/database/drizzle";
 import { booksSchema } from "@/database/schemas/books";
 import { unstable_cache } from "next/cache";
+import { asc, desc, eq, sql } from "drizzle-orm";
+import { borrowRecordsSchema, usersSchema } from "@/database";
 
 type FilterOptions = "A-Z" | "Z-A" | "Latest" | "Oldest";
 
+const STARTING_PAGE = 1;
+
+// Region Books
 const DEFAULT_BOOK_LIMIT = 7;
 const GET_BOOKS_CACHE_KEY = "get-books";
+// End of Region Books
+
+// Region Borrowed Books
+const GET_BORROWED_BOOKS_PER_PAGE_LIMIT = 6;
+const GET_BORROWED_BOOKS_CACHE_KEY = "get-borrowed-books";
+// End of Region Borrowed Books
 
 /**
  * Asynchronously creates a new book entry in the database.
@@ -124,3 +135,80 @@ export const getBooks = async (
 
   return _getBooks(limit, filter);
 };
+
+export const getBorrowedBooks = async (
+  limit: number = GET_BORROWED_BOOKS_PER_PAGE_LIMIT,
+  page: number = STARTING_PAGE,
+  sort: FilterOptions = "Latest",
+): Promise<{
+  success: boolean;
+  message?: string;
+  data?: BorrowRequestData[];
+  meta?: {
+    page: number;
+    limit: number;
+    totalCount: number;
+    totalPages: number;
+  };
+}> => {
+  const offset = (page - STARTING_PAGE) * limit;
+  const order =
+    sort === "Latest"
+      ? desc(booksSchema.createdAt)
+      : asc(booksSchema.createdAt);
+
+  try {
+    // :BorrowRequestData[]
+    const borrowedBooks = await db
+      .select({
+        id: borrowRecordsSchema.id,
+        status: borrowRecordsSchema.status,
+        borrowDate: borrowRecordsSchema.borrowDate,
+        returnDate: borrowRecordsSchema.returnDate,
+        dueDate: borrowRecordsSchema.dueDate,
+        book: {
+          id: booksSchema.id,
+          title: booksSchema.title,
+          author: booksSchema.author,
+          genre: booksSchema.genre,
+          coverCover: booksSchema.coverColor,
+          coverUrl: booksSchema.coverUrl,
+        },
+        user: {
+          id: usersSchema.id,
+          fullName: usersSchema.fullName,
+          email: usersSchema.email,
+        },
+      })
+      .from(borrowRecordsSchema)
+      .leftJoin(booksSchema, eq(booksSchema.id, borrowRecordsSchema.bookId))
+      .leftJoin(usersSchema, eq(usersSchema.id, borrowRecordsSchema.userId))
+      .orderBy(order)
+      .limit(limit)
+      .offset(offset);
+
+    const totalRecords = await db.execute(
+      sql`SELECT COUNT(*)::int AS count FROM ${borrowRecordsSchema}`,
+    );
+    const totalCount = Number(totalRecords.rows?.[0]?.count ?? 0);
+
+    return {
+      success: true,
+      data: borrowedBooks,
+      meta: {
+        page,
+        limit,
+        totalCount,
+        totalPages: Math.ceil(totalCount / limit),
+      },
+    };
+  } catch (error: unknown) {
+    return {
+      success: false,
+      message: "An error occurred while fetching users.",
+      data: [],
+    };
+  }
+};
+
+// TODO: Continue the implementation of using unstable_cache

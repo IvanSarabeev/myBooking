@@ -85,9 +85,10 @@ const avatarBgColors = [
 export const getAvatarColor = (seed: string): string => {
   if (!seed) return avatarBgColors[0];
 
-  const seedIndex =
-    seed.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0) &
-    avatarBgColors.length;
+  const hash = seed
+    .split("")
+    .reduce((acc, char) => acc + char.charCodeAt(0), 0);
 
+  const seedIndex = hash % avatarBgColors.length;
   return avatarBgColors[seedIndex];
 };

@@ -1,7 +1,10 @@
 import { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { cn, getAvatarColor } from "@/lib/utils";
+import { cn, getAvatarColor, getNameInitials } from "@/lib/utils";
+import BookCover from "@/components/BookCover";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import dayjs from "dayjs";
 
 interface AccountRequest {
   id: string;
@@ -12,20 +15,12 @@ interface AccountRequest {
 
 interface BorrowRequest {
   id: string;
-  bookId: string;
-  borrowerId: string;
-  borrowerName: string;
-  title: string;
-  author: string;
-  genre: string;
-  createdAt: string;
+  status: BorrowBookStatus["status"];
+  borrowerDate: Date;
+  dueDate: Date;
+  book: Pick<Book, "title" | "author" | "genre" | "coverUrl" | "coverColor">;
+  user: Pick<User, "id" | "fullName" | "email">;
 }
-
-// type T = AccountRequest | BorrowRequest;
-type RequestTypeMap = {
-  account: AccountRequest;
-  borrow: BorrowRequest;
-};
 
 type RequestCardProps =
   | {
@@ -73,14 +68,83 @@ const RequestCard: FC<RequestCardProps> = ({
 
       {hasAvailableItems ? (
         type === "borrow" ? (
-          <div className="flex flex-col"></div>
+          <div className="gap-2 flex flex-col">
+            {items?.length &&
+              items?.map((item) => {
+                const borrowDate = dayjs(item.borrowerDate).format(
+                  "DD/MM/YYYY",
+                );
+
+                return (
+                  <div
+                    key={item.id}
+                    className="flex items-center justify-between rounded-xl px-4 py-3.5 border border-[#F8F8FF] shadow-xs"
+                  >
+                    <div className="flex items-center gap-x-2">
+                      <BookCover
+                        variant="small"
+                        coverColor={item.book.coverColor}
+                        coverImage={item.book.coverUrl}
+                      />
+
+                      <div className="flex flex-col items-start">
+                        <div className="flex flex-col items-start gap-y-0 5">
+                          <h2 className="text-base font-semibold tracking-normal">
+                            {item.book.title}
+                          </h2>
+                          <div className="flex items-center gap-x-1 lg:gap-x-2 text-sm text-[#64748B] font-normal tracking-normal leading-3.5">
+                            <p>{item.book.author}</p>
+                            {"/"}
+                            <p>{item.book.genre}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-x-2 lg:gap-x-3 mt-1.5">
+                          <div className="flex items-center gap-x-0.5">
+                            <Avatar className="size-6">
+                              <AvatarFallback className="text-xs bg-primary-admin text-light-100">
+                                {getNameInitials(
+                                  item.user?.fullName
+                                    ? item.user?.fullName
+                                    : "N/A",
+                                )}
+                              </AvatarFallback>
+                            </Avatar>
+                            <p className="text-xs font-normal tracking-normal text-[#3A354E]">
+                              {item.user.fullName}
+                            </p>
+                          </div>
+                          <span className="flex items-center">
+                            <Image
+                              src="/icons/admin/calendar.svg"
+                              alt="calendar"
+                              height={16}
+                              width={16}
+                            />
+                            <p className="text-xs font-normal tracking-normal text-[#3A354E]">
+                              {borrowDate}
+                            </p>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Link href={`/admin/book-requests`}>
+                      <Image
+                        src="/icons/admin/eye.svg"
+                        alt="eye"
+                        height={20}
+                        width={20}
+                      />
+                    </Link>
+                  </div>
+                );
+              })}
+          </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
             {items?.length &&
-              items?.map((item, index) => {
-                const bgColor = getAvatarColor(String(index));
-
-                console.log("BG COLOR: ", bgColor);
+              items?.map((item) => {
+                const bgColor = getAvatarColor(item.fullName || item.email);
 
                 return (
                   <div
@@ -99,13 +163,10 @@ const RequestCard: FC<RequestCardProps> = ({
                       <div
                         className={cn(
                           bgColor,
-                          "size-12 rounded-full flex items-center justify-center  text-[#475569] font-semibold uppercase",
+                          "size-12 rounded-full flex items-center justify-center  text-[#475569] font-semibold",
                         )}
                       >
-                        {item.fullName
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
+                        {getNameInitials(item.fullName)}
                       </div>
                     )}
 
@@ -147,4 +208,5 @@ const RequestCard: FC<RequestCardProps> = ({
   );
 };
 
+// @ts-ignore
 export default RequestCard;

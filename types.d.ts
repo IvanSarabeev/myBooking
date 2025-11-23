@@ -71,6 +71,16 @@ interface BorrowedBooks
   books: Pick<Book, "id" | "title" | "genre" | "coverUrl" | "coverColor">;
 }
 
+interface BorrowRequestData {
+  id: string;
+  status: BorrowBookStatus["status"];
+  borrowDate: Date;
+  dueDate: Date | string;
+  returnDate: string | null;
+  book?: Pick<Book, "id" | "title" | "coverColor" | "coverUrl">;
+  user?: Pick<User, "id" | "fullName" | "email">;
+}
+
 /**
  * Represents the status of a user.
  *
@@ -159,6 +169,8 @@ type BookSortOptions =
 type AccountRequestSortOptions = "oldest" | "latest";
 
 type AllUsersSortOptions = "alphabetical" | "oldest" | "latest" | "records";
+
+type BorrowedBooksSortOptions = "oldest" | "latest";
 
 type SortOption<T extends string> = {
   id: T;
